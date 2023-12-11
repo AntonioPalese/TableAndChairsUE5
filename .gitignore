@@ -1,0 +1,9 @@
+*.vs*
+*Binaries*
+*DerivedDataChache*
+*Intermediate*
+*.vsconfig
+*.sln
+*.git
+*textures*
+*Saved*
