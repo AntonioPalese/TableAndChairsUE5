@@ -23,7 +23,7 @@ protected:
 
 	void addQuadMesh(FVector TopRight, FVector BottomRight, FVector TopLeft, FVector BottomLeft, int32& TriangleIndexCount, FProcMeshTangent TangentSetup);
 	void GenerateMeshes(FVector min, FVector max);
-	void ChairGenerate(FVector2D Origin);
+	void ChairGenerate(FVector2D Origin, int dir);
 
 	void GenerateLeg(FVector2D Origin, FVector2D Ds);
 	void GenerateSeat(FVector2D Origin, FVector2D Ds);

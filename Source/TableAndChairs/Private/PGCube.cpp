@@ -16,24 +16,33 @@ APGCube::APGCube()
 // This is called when actor is spawned (at runtime or when you drop it into the world in editor)
 void APGCube::PostActorCreated()
 {
-	Super::PostActorCreated();
-	ChairGenerate(FVector2D(0, 0));
-	ChairGenerate(FVector2D(60, 0));
 
-	ChairGenerate(FVector2D(60, -70));
-	ChairGenerate(FVector2D(0, -70));
-	
+	double space_along_y = 120;
+	double space = 20;
+
+
+	Super::PostActorCreated();
+	for (int i = 0; i < 10; i++)
+	{
+		ChairGenerate(FVector2D((20 * 2 + space) * i, 0), 1);
+		ChairGenerate(FVector2D((20 * 2 + space) * i, -space_along_y), -1);
+	}	
 }
 
 // This is called when actor is already in level and map is opened
 void APGCube::PostLoad()
 {
-	Super::PostLoad();
-	ChairGenerate(FVector2D(0, 0));
-	ChairGenerate(FVector2D(60, 0));
 
-	ChairGenerate(FVector2D(60, -70));
-	ChairGenerate(FVector2D(0, -70));
+	double space_along_y = 120;
+	double space = 20;
+
+
+	Super::PostLoad();
+	for (int i = 0; i < 10; i++)
+	{
+		ChairGenerate(FVector2D((20 * 2 + space) * i, 0), 1);
+		ChairGenerate(FVector2D((20 * 2 + space) * i, -space_along_y), -1);
+	}
 }
 
 void APGCube::addQuadMesh(FVector TopRight, FVector BottomRight, FVector TopLeft, FVector BottomLeft, int32& TriangleIndexCount, FProcMeshTangent TangentSetup)
@@ -125,7 +134,7 @@ void APGCube::GenerateMeshes(FVector min, FVector max)
 void APGCube::GenerateLeg(FVector2D Origin, FVector2D Ds)
 {
 	int32 hd = 5;
-	int32 totd = 80;
+	int32 totd = 60;
 
 	for (int i = 0; i < totd; i += hd) {
 		GenerateMeshes(FVector(Origin.X - Ds.X / 2, Origin.Y - Ds.Y / 2, i), FVector(Origin.X + Ds.X / 2, Origin.Y + Ds.Y / 2, i + hd));
@@ -134,20 +143,20 @@ void APGCube::GenerateLeg(FVector2D Origin, FVector2D Ds)
 
 void APGCube::GenerateSeat(FVector2D Origin, FVector2D Ds)
 {	
-	GenerateMeshes(FVector(Origin.X - Ds.X / 2, Origin.Y - Ds.Y / 2, 80), FVector(Origin.X + Ds.X / 2, Origin.Y + Ds.Y / 2, 86));
+	GenerateMeshes(FVector(Origin.X - Ds.X / 2, Origin.Y - Ds.Y / 2, 60), FVector(Origin.X + Ds.X / 2, Origin.Y + Ds.Y / 2, 66));
 }
 
 void APGCube::GenerateBack(FVector2D Origin, FVector2D Ds)
 {
 	int32 hd = 5;
 	int32 totd = 60;
-	totd += 80;
-	for (int i = 80; i < totd; i += hd) {
+	totd += 60;
+	for (int i = 60; i < totd; i += hd) {
 		GenerateMeshes(FVector(Origin.X - Ds.X / 2, Origin.Y - Ds.Y / 2, i), FVector(Origin.X + Ds.X / 2, Origin.Y + Ds.Y / 2, i + hd));
 	}
 }
 
-void APGCube::ChairGenerate(FVector2D Origin)
+void APGCube::ChairGenerate(FVector2D Origin, int dir)
 {
 	int shift = 15;
 
@@ -157,6 +166,6 @@ void APGCube::ChairGenerate(FVector2D Origin)
 	GenerateLeg(FVector2D(Origin.X + shift, Origin.Y + shift), FVector2D(5, 5));
 
 	GenerateSeat(FVector2D(Origin.X, Origin.Y), FVector2D(40, 40));
-	GenerateBack(FVector2D(Origin.X, Origin.Y+17), FVector2D(40, 5));
+	GenerateBack(FVector2D(Origin.X, Origin.Y+(17*dir)), FVector2D(40, 5));
 
 }
