@@ -31,16 +31,20 @@ void APGCube::Generate()
 {
 	double Hlegs = 60.0;
 	double Hback = 80.0;
-	double Wseat = 30.0, Lseat = 40.0, Hseat = 5.0;
+	double Wseat = 60.0, Lseat = 70.0, Hseat = 5.0;
 	double space_along_y = 120;
 	double space = 40;
 
 	//Wseat along x, Lseat along y
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		ChairGenerate(FVector2D( (Wseat + space) * i, 0), Hlegs, Hback, Wseat, Lseat, Hseat, 1);
 		ChairGenerate(FVector2D( (Wseat + space) * i, -space_along_y), Hlegs, Hback, Wseat, Lseat, Hseat, -1);
 	}
+
+	/*double HlegsTable = 60;
+	double Wttop = 200, Lttop = 90, Httop = 10;
+	TableGenerate(FVector2D(0.0, 0.0), HlegsTable, Wttop, Lttop, Httop);*/
 
 }
 
@@ -154,18 +158,38 @@ void APGCube::GenerateBack(FVector2D Origin, FVector2D Ds, double starting_heigh
 
 void APGCube::ChairGenerate(FVector2D Origin, double Hlegs, double Hback, double Wseat, double Lseat, double Hseat, int dir)
 {
-	int shift = 15;
+	double shift_x = Wseat/2-5;
+	double shift_y = Lseat/2-5;
 
 
 	// fixed W and L (Legs)
-	GenerateLeg(FVector2D(Origin.X - shift, Origin.Y - shift), FVector2D(5, 5), Hlegs);
-	GenerateLeg(FVector2D(Origin.X - shift, Origin.Y + shift), FVector2D(5, 5), Hlegs);
-	GenerateLeg(FVector2D(Origin.X + shift, Origin.Y - shift), FVector2D(5, 5), Hlegs);
-	GenerateLeg(FVector2D(Origin.X + shift, Origin.Y + shift), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X - shift_x, Origin.Y - shift_y), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X - shift_x, Origin.Y + shift_y), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X + shift_x, Origin.Y - shift_y), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X + shift_x, Origin.Y + shift_y), FVector2D(5, 5), Hlegs);
 
 	// seat (Seat)
 	GenerateSeat(FVector(Origin.X, Origin.Y, Hlegs), FVector(Wseat, Lseat, Hseat));
 
 	// fixed W and L (Back)
-	GenerateBack(FVector2D(Origin.X, Origin.Y+(17*dir)), FVector2D(40, 5), Hlegs, Hback);
+	GenerateBack(FVector2D(Origin.X, Origin.Y+(shift_y*dir)), FVector2D(Wseat, 5), Hlegs, Hback);
+}
+
+void APGCube::TableGenerate(FVector2D Origin, double Hlegs, double Wttop, double Lttop, double Httop)
+{
+	/*
+	A table is defined as a geometry that has :
+	•	A squared tabletop with width, length, and height parameters
+	•	4 Legs with a fixed width and length, and a variable height parameter
+	*/
+
+	double shift_x = Wttop / 2 - 5;
+	double shift_y = Lttop / 2 - 5;
+
+	GenerateLeg(FVector2D(Origin.X - shift_x, Origin.Y - shift_y), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X - shift_x, Origin.Y + shift_y), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X + shift_x, Origin.Y - shift_y), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X + shift_x, Origin.Y + shift_y), FVector2D(5, 5), Hlegs);
+
+	GenerateSeat(FVector(Origin.X, Origin.Y, Hlegs), FVector(Wttop, Lttop, Httop));
 }
