@@ -13,6 +13,7 @@ def rotate(P, angle):
     
 class Rectangle:
     def __init__(self, origin, size, angle = 0, mode="xy") -> None:
+        assert mode in ["xy", "xz", "yz"]
         self.origin = origin
         self.size = size
         self.angle = angle   
@@ -112,32 +113,43 @@ class Cuboid:
         dy = size[1]
         dz = size[2]
         
-        self.children = []
-        
+        self.rotation_center = (self.origin[0], self.origin[1])
+        self.children = []        
         #top
-        self.children.append(Rectangle(origin=(self.origin[0], self.origin[1], self.origin[2] + dz/2), size=(dx, dy, 0), mode="xy"))
+        self.children.append(Rectangle(origin=(0, 0, 1), size=(3, 10, 0), mode="xy"))
+        #self.children.append(Rectangle(origin=(self.origin[0], self.origin[1], self.origin[2] + dz/2), size=(dx, dy, 0), mode="xy"))
         #bottom
-        self.children.append(Rectangle(origin=(self.origin[0], self.origin[1], self.origin[2] - dz/2), size=(dx, dy, 0), mode="xy"))
-        #front
-        self.children.append(Rectangle(origin=(self.origin[0], self.origin[1] + dy/2, self.origin[2]), size=(dx, 0, dz), mode="xz"))
-        #back
-        self.children.append(Rectangle(origin=(self.origin[0], self.origin[1] - dy/2, self.origin[2]), size=(dx, 0, dz), mode="xz"))
-        #right
-        self.children.append(Rectangle(origin=(self.origin[0] + dx/2, self.origin[1], self.origin[2]), size=(0, dy, dz), mode="yz"))        
-        #left
-        self.children.append(Rectangle(origin=(self.origin[0] - dx/2, self.origin[1], self.origin[2]), size=(0, dy, dz), mode="yz"))
+        # self.children.append(Rectangle(origin=(self.origin[0], self.origin[1], self.origin[2] - dz/2), size=(dx, dy, 0), mode="xy"))
+        # #front
+        # self.children.append(Rectangle(origin=(self.origin[0], self.origin[1] + dy/2, self.origin[2]), size=(dx, 0, dz), mode="xz"))
+        # #back
+        # self.children.append(Rectangle(origin=(self.origin[0], self.origin[1] - dy/2, self.origin[2]), size=(dx, 0, dz), mode="xz"))
+        # #right
+        # self.children.append(Rectangle(origin=(self.origin[0] + dx/2, self.origin[1], self.origin[2]), size=(0, dy, dz), mode="yz"))        
+        # #left
+        # self.children.append(Rectangle(origin=(self.origin[0] - dx/2, self.origin[1], self.origin[2]), size=(0, dy, dz), mode="yz"))
         
     def draw(self):
         for c in self.children:
             c.draw()
+            
+    def rotate(self, center = None, angle = 0):        
+        if center is None:
+            center = self.rotation_center
+        for c in self.children:
+            c.rotate(angle=angle)        
         
     
 
-# r = Rectangle(origin=(0, 0, 0), size=(10, 10, 0), mode="xy")
-# r.draw()
+# r1 = Rectangle(origin=(0, 0, 1), size=(1, 1, 0), mode="xy")#.rotate(angle=45)
+# #r2 = Rectangle(origin=(0, 0, 0), size=(10, 10, 0), mode="xy").rotate(angle=45)
+# r1.rotate(angle=45)
+# r1.draw()
+# #r2.draw()
 # plt.show()
 
 c = Cuboid(origin=(0, 0, 0), size=(0.3, 10, 2))
+c.rotate(angle=45)
 c.draw()
 plt.show()   
 
