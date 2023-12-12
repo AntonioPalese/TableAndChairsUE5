@@ -16,33 +16,32 @@ APGCube::APGCube()
 // This is called when actor is spawned (at runtime or when you drop it into the world in editor)
 void APGCube::PostActorCreated()
 {
-
-	double space_along_y = 120;
-	double space = 20;
-
-
-	Super::PostActorCreated();
-	for (int i = 0; i < 10; i++)
-	{
-		ChairGenerate(FVector2D((20 * 2 + space) * i, 0), 1);
-		ChairGenerate(FVector2D((20 * 2 + space) * i, -space_along_y), -1);
-	}	
+	Super::PostActorCreated();	
+	Generate();
 }
 
 // This is called when actor is already in level and map is opened
 void APGCube::PostLoad()
 {
-
-	double space_along_y = 120;
-	double space = 20;
-
-
 	Super::PostLoad();
-	for (int i = 0; i < 10; i++)
+	Generate();
+}
+
+void APGCube::Generate()
+{
+	double Hlegs = 60.0;
+	double Hback = 80.0;
+	double Wseat = 30.0, Lseat = 40.0, Hseat = 5.0;
+	double space_along_y = 120;
+	double space = 40;
+
+	//Wseat along x, Lseat along y
+	for (int i = 0; i < 2; i++)
 	{
-		ChairGenerate(FVector2D((20 * 2 + space) * i, 0), 1);
-		ChairGenerate(FVector2D((20 * 2 + space) * i, -space_along_y), -1);
+		ChairGenerate(FVector2D( (Wseat + space) * i, 0), Hlegs, Hback, Wseat, Lseat, Hseat, 1);
+		ChairGenerate(FVector2D( (Wseat + space) * i, -space_along_y), Hlegs, Hback, Wseat, Lseat, Hseat, -1);
 	}
+
 }
 
 void APGCube::addQuadMesh(FVector TopRight, FVector BottomRight, FVector TopLeft, FVector BottomLeft, int32& TriangleIndexCount, FProcMeshTangent TangentSetup)
@@ -131,41 +130,42 @@ void APGCube::GenerateMeshes(FVector min, FVector max)
 
 }
 
-void APGCube::GenerateLeg(FVector2D Origin, FVector2D Ds)
+void APGCube::GenerateLeg(FVector2D Origin, FVector2D Ds, double height)
 {
-	int32 hd = 5;
-	int32 totd = 60;
-
-	for (int i = 0; i < totd; i += hd) {
+	double hd = 5.0;
+	for (double i = 0; i < height; i += hd) {
 		GenerateMeshes(FVector(Origin.X - Ds.X / 2, Origin.Y - Ds.Y / 2, i), FVector(Origin.X + Ds.X / 2, Origin.Y + Ds.Y / 2, i + hd));
 	}
 }
 
-void APGCube::GenerateSeat(FVector2D Origin, FVector2D Ds)
+void APGCube::GenerateSeat(FVector Origin, FVector Ds)
 {	
-	GenerateMeshes(FVector(Origin.X - Ds.X / 2, Origin.Y - Ds.Y / 2, 60), FVector(Origin.X + Ds.X / 2, Origin.Y + Ds.Y / 2, 66));
+	GenerateMeshes(FVector(Origin.X - Ds.X / 2, Origin.Y - Ds.Y / 2, Origin.Z - Ds.Z / 2), FVector(Origin.X + Ds.X / 2, Origin.Y + Ds.Y / 2, Origin.Z + Ds.Z / 2));
 }
 
-void APGCube::GenerateBack(FVector2D Origin, FVector2D Ds)
+void APGCube::GenerateBack(FVector2D Origin, FVector2D Ds, double starting_height, double height)
 {
-	int32 hd = 5;
-	int32 totd = 60;
-	totd += 60;
-	for (int i = 60; i < totd; i += hd) {
+	double hd = 5.0;
+	height += starting_height;
+	for (int i = starting_height; i < height; i += hd) {
 		GenerateMeshes(FVector(Origin.X - Ds.X / 2, Origin.Y - Ds.Y / 2, i), FVector(Origin.X + Ds.X / 2, Origin.Y + Ds.Y / 2, i + hd));
 	}
 }
 
-void APGCube::ChairGenerate(FVector2D Origin, int dir)
+void APGCube::ChairGenerate(FVector2D Origin, double Hlegs, double Hback, double Wseat, double Lseat, double Hseat, int dir)
 {
 	int shift = 15;
 
-	GenerateLeg(FVector2D(Origin.X - shift, Origin.Y - shift), FVector2D(5, 5));
-	GenerateLeg(FVector2D(Origin.X - shift, Origin.Y + shift), FVector2D(5, 5));
-	GenerateLeg(FVector2D(Origin.X + shift, Origin.Y - shift), FVector2D(5, 5));
-	GenerateLeg(FVector2D(Origin.X + shift, Origin.Y + shift), FVector2D(5, 5));
 
-	GenerateSeat(FVector2D(Origin.X, Origin.Y), FVector2D(40, 40));
-	GenerateBack(FVector2D(Origin.X, Origin.Y+(17*dir)), FVector2D(40, 5));
+	// fixed W and L (Legs)
+	GenerateLeg(FVector2D(Origin.X - shift, Origin.Y - shift), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X - shift, Origin.Y + shift), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X + shift, Origin.Y - shift), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X + shift, Origin.Y + shift), FVector2D(5, 5), Hlegs);
 
+	// seat (Seat)
+	GenerateSeat(FVector(Origin.X, Origin.Y, Hlegs), FVector(Wseat, Lseat, Hseat));
+
+	// fixed W and L (Back)
+	GenerateBack(FVector2D(Origin.X, Origin.Y+(17*dir)), FVector2D(40, 5), Hlegs, Hback);
 }

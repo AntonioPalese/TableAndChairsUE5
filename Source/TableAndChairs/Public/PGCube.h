@@ -23,11 +23,12 @@ protected:
 
 	void addQuadMesh(FVector TopRight, FVector BottomRight, FVector TopLeft, FVector BottomLeft, int32& TriangleIndexCount, FProcMeshTangent TangentSetup);
 	void GenerateMeshes(FVector min, FVector max);
-	void ChairGenerate(FVector2D Origin, int dir);
+	void ChairGenerate(FVector2D Origin, double Hlegs, double Hback, double Wseat, double Lseat, double Hseat, int dir);
+	void Generate();
 
-	void GenerateLeg(FVector2D Origin, FVector2D Ds);
-	void GenerateSeat(FVector2D Origin, FVector2D Ds);
-	void GenerateBack(FVector2D Origin, FVector2D Ds);
+	void GenerateLeg(FVector2D Origin, FVector2D Ds, double height);
+	void GenerateSeat(FVector Origin, FVector Ds);
+	void GenerateBack(FVector2D Origin, FVector2D Ds, double starting_height, double height);
 
 	UPROPERTY(VisibleAnywhere)
 	UProceduralMeshComponent* m_Mesh;
