@@ -2,6 +2,7 @@
 
 
 #include "PGCube.h"
+#include <assert.h>
 
 // Sets default values
 APGCube::APGCube()
@@ -29,23 +30,30 @@ void APGCube::PostLoad()
 
 void APGCube::Generate()
 {
+	///// chair
 	double Hlegs = 60.0;
 	double Hback = 80.0;
-	double Wseat = 60.0, Lseat = 70.0, Hseat = 5.0;
-	double space_along_y = 120;
-	double space = 40;
+	double Wseat = 60.0, Lseat = 85.0, Hseat = 5.0;
+	double space_along_y = 90;
+	double space = 5;	
+	////////////////
+	
+	///// table
+	double HlegsTable = 70;
+	double Wttop = 400, Lttop = 90, Httop = 10;
+	////////////////
 
-	//Wseat along x, Lseat along y
-	for (int i = 0; i < 6; i++)
+	assert(HlegsTable - Httop/2 > Hlegs + Hseat/2);
+	assert(space_along_y >= Lseat);
+
+	int N = Wttop / (Wseat+space);
+
+	TableGenerate(FVector2D((Wseat + space) * (N / 2 - 1) + Wseat / 2 + space / 2, -space_along_y / 2), HlegsTable, Wttop, Lttop, Httop);	
+	for (int i = 0; i < N; i++)
 	{
 		ChairGenerate(FVector2D( (Wseat + space) * i, 0), Hlegs, Hback, Wseat, Lseat, Hseat, 1);
 		ChairGenerate(FVector2D( (Wseat + space) * i, -space_along_y), Hlegs, Hback, Wseat, Lseat, Hseat, -1);
 	}
-
-	/*double HlegsTable = 60;
-	double Wttop = 200, Lttop = 90, Httop = 10;
-	TableGenerate(FVector2D(0.0, 0.0), HlegsTable, Wttop, Lttop, Httop);*/
-
 }
 
 void APGCube::addQuadMesh(FVector TopRight, FVector BottomRight, FVector TopLeft, FVector BottomLeft, int32& TriangleIndexCount, FProcMeshTangent TangentSetup)
