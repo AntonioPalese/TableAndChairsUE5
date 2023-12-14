@@ -31,24 +31,25 @@ void APGCube::PostLoad()
 void APGCube::Generate()
 {
 	///// chair
-	double Hlegs = 60.0;
-	double Hback = 80.0;
-	double Wseat = 60.0, Lseat = 85.0, Hseat = 5.0;
-	double space = 5;	
+	double Hlegs = 40.0;
+	double Hback = 60.0;
+	double Wseat = 40.0, Lseat = 60.0, Hseat = 5.0;
+	double space = 20;	
 	////////////////
 	
 	///// table
-	double HlegsTable = 70;
-	double Wttop = 400, Lttop = 90, Httop = 10;
+	double HlegsTable = 80;
+	double Wttop = 400, Lttop = 400, Httop = 10;
 	////////////////
 	FVector Origin(0.0, 0.0, 0.0);
 
 	assert(HlegsTable - Httop/2 > Hlegs + Hseat/2);
+	assert(Lttop > Lseat);
 
 	double rest_lr = Lseat/2 > 5 ? Lseat/2 : 5;
 	int N_lr = floor((Wttop - rest_lr * 2) / (Wseat + space));
 
-	double rest_tb = /*Lseat/2 > 5 ? Lseat/2 :*/ 5;
+	double rest_tb = 5;
 	int N_tb = floor((Lttop - rest_tb*2) / (Wseat+space));
 
 	TableGenerate(FVector2D(Origin.X, Origin.Y), HlegsTable, Wttop, Lttop, Httop);
@@ -75,11 +76,6 @@ void APGCube::Generate()
 		}
 	}
 
-	 double tmp;
-	 tmp = Wseat;
-	 Wseat = Lseat;
-	 Lseat = tmp;
-
 	{
 		// Chairs along top
 		double compensation = ((Lttop - rest_tb * 2) - N_tb * (Wseat + space)) / 2;
@@ -87,7 +83,7 @@ void APGCube::Generate()
 		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;
 		for (int i = 0; i < N_tb; i++)
 		{
-			ChairGenerate(FVector2D(starting_x - (Wseat + space) * i, starting_y), Hlegs, Hback, Wseat, Lseat, Hseat, 1, true);
+			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + space) * i), Hlegs, Hback, Wseat, Lseat, Hseat, 1, true);
 		}
 
 	}
@@ -99,7 +95,7 @@ void APGCube::Generate()
 		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;
 		for (int i = 0; i < N_tb; i++)
 		{
-			ChairGenerate(FVector2D(starting_x - (Wseat + space) * i, starting_y), Hlegs, Hback, Wseat, Lseat, Hseat, -1, true);
+			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + space) * i), Hlegs, Hback, Wseat, Lseat, Hseat, -1, true);
 		}
 	}
 }
@@ -214,6 +210,13 @@ void APGCube::GenerateBack(FVector2D Origin, FVector2D Ds, double starting_heigh
 
 void APGCube::ChairGenerate(FVector2D Origin, double Hlegs, double Hback, double Wseat, double Lseat, double Hseat, int dir, bool rotated)
 {
+	if (rotated) {
+		double tmp;
+		tmp = Wseat;
+		Wseat = Lseat;
+		Lseat = tmp;
+	}
+
 	double shift_x = Wseat/2-5;
 	double shift_y = Lseat/2-5;
 
