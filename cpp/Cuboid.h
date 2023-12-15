@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-
+#include <fstream>
 #include "Rectangle.h"
 
 class Cuboid{
@@ -20,5 +20,9 @@ private:
     std::vector<FVector> m_Vertexes;
     std::vector<int> m_Triangles;
     int m_Counter;
+
+
+    std::ofstream m_Ofs;
+
 };
 

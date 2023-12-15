@@ -1,7 +1,8 @@
 #include "Cuboid.h"
 #include <iostream>
+#include "Utils.h"
 
-Cuboid::Cuboid( FVector origin, FVector size, double angle )
+Cuboid::Cuboid( FVector origin, FVector size, double angle ) : m_Ofs( utilities::get_available_name() )
 {
     m_Origin = origin;
     m_Size = size;
@@ -41,14 +42,15 @@ std::ostream& operator<<( std::ostream& os, const FVector& vec )
 void Cuboid::generate()
 {
     for ( const auto& v : m_Vertexes ) {
-        std::cout << v << "::";
+        m_Ofs << v << "::";
     }
-    std::cout << std::endl;
+    m_Ofs << std::endl;
 
     for ( const auto& t : m_Triangles ) {
-        std::cout << t << ",";
+        m_Ofs << t << ",";
     }
-    std::cout << std::endl;
+    m_Ofs << std::endl;
+    m_Ofs.close();
 }
 
 Cuboid* Cuboid::rotate( double angle )
