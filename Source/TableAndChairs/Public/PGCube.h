@@ -5,9 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "ProceduralMeshComponent.h"
+#include "Engine/GameEngine.h"
 #include "PGCube.generated.h"
 
-UCLASS()
+
+UCLASS(Blueprintable)
 class TABLEANDCHAIRS_API APGCube : public AActor
 {
 	GENERATED_BODY()
@@ -25,7 +27,7 @@ protected:
 	void GenerateMeshes(FVector min, FVector max);
 	void ChairGenerate(FVector2D Origin, double Hlegs, double Hback, double Wseat, double Lseat, double Hseat, int dir = 1, bool rotated = false);
 	void TableGenerate(FVector2D Origin, double Hlegs, double Wttop, double Lttop, double Httop);
-	void Generate();
+	void Generate(FVector Origin);
 
 	void GenerateLeg(FVector2D Origin, FVector2D Ds, double height);
 	void GenerateSeat(FVector Origin, FVector Ds);
@@ -33,6 +35,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	UProceduralMeshComponent* m_Mesh;
+
+	UPROPERTY(BlueprintReadWrite)
+	double H;
+
+	//UFUNCTION(BlueprintCallable, Category = "TC")
+	//static void GenerateFromClick(FVector origin);
 
 public:	
 
@@ -44,6 +52,7 @@ private:
 	TArray<FLinearColor> Colors;
 	TArray<FProcMeshTangent> Tangents;
 	int32 Nsections = 0;	
+
 
 
 };

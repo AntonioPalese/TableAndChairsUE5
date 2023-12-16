@@ -11,37 +11,53 @@ APGCube::APGCube()
 	m_Mesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("GeneratedMesh"));
 	RootComponent = m_Mesh;
 	m_Mesh->bUseAsyncCooking = true;
-
+	m_Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	m_Mesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+	m_Mesh->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	m_Mesh->SetGenerateOverlapEvents(true);
+	m_Mesh->SetNotifyRigidBodyCollision(true);
+	m_Mesh->bUseComplexAsSimpleCollision = false;
 }
 
 // This is called when actor is spawned (at runtime or when you drop it into the world in editor)
 void APGCube::PostActorCreated()
 {
-	Super::PostActorCreated();	
-	Generate();
+	Super::PostActorCreated();
+	Generate(FVector(0.0, 0.0, 0.0));
+
+
+	//ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
+	//for (int i = 0; i < 753; i++)
+	//	m_Mesh->SetMaterial(i, Material.Object.Get());
 }
 
 // This is called when actor is already in level and map is opened
 void APGCube::PostLoad()
 {
 	Super::PostLoad();
-	Generate();
+	Generate(FVector(0.0, 0.0, 0.0));
+
+
+	//ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
+	//for (int i = 0; i < 753; i++)
+	//	m_Mesh->SetMaterial(i, Material.Object.Get());
 }
 
-void APGCube::Generate()
+
+
+void APGCube::Generate(FVector Origin)
 {
 	///// chair
 	double Hlegs = 40.0;
-	double Hback = 60.0;
-	double Wseat = 40.0, Lseat = 60.0, Hseat = 5.0;
+	double Hback = 50;
+	double Wseat = 20.0, Lseat = 20.0, Hseat = 5.0;
 	double space = 20;	
 	////////////////
 	
 	///// table
 	double HlegsTable = 80;
-	double Wttop = 400, Lttop = 400, Httop = 10;
+	double Wttop = 200, Lttop = 200, Httop = 10;
 	////////////////
-	FVector Origin(0.0, 0.0, 0.0);
 
 	assert(HlegsTable - Httop/2 > Hlegs + Hseat/2);
 	assert(Lttop > Lseat);
@@ -207,6 +223,12 @@ void APGCube::GenerateBack(FVector2D Origin, FVector2D Ds, double starting_heigh
 		GenerateMeshes(FVector(Origin.X - Ds.X / 2, Origin.Y - Ds.Y / 2, i), FVector(Origin.X + Ds.X / 2, Origin.Y + Ds.Y / 2, i + hd));
 	}
 }
+
+//void APGCube::GenerateFromClick(FVector origin)
+//{
+//	if (GEngine)
+//		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Generated at :  x : %f, y : %f, z : %f"), (float)origin.X, (float)origin.Y, (float)origin.Z));
+//}
 
 void APGCube::ChairGenerate(FVector2D Origin, double Hlegs, double Hback, double Wseat, double Lseat, double Hseat, int dir, bool rotated)
 {
