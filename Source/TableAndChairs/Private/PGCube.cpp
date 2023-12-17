@@ -17,6 +17,10 @@ APGCube::APGCube()
 	m_Mesh->SetGenerateOverlapEvents(true);
 	m_Mesh->SetNotifyRigidBodyCollision(true);
 	m_Mesh->bUseComplexAsSimpleCollision = false;
+
+	Wseat = 20.0;
+	Lseat = 20.0;
+	Hseat = 5.0;
 }
 
 // This is called when actor is spawned (at runtime or when you drop it into the world in editor)
@@ -50,7 +54,6 @@ void APGCube::Generate(FVector Origin)
 	///// chair
 	double Hlegs = 40.0;
 	double Hback = 50;
-	double Wseat = 20.0, Lseat = 20.0, Hseat = 5.0;
 	double space = 20;	
 	////////////////
 	
@@ -77,7 +80,7 @@ void APGCube::Generate(FVector Origin)
 		double starting_y = Origin.Y + Lttop / 2;
 		for (int i = 0; i < N_lr; i++)
 		{
-			ChairGenerate(FVector2D( starting_x - (Wseat+space)*i, starting_y), Hlegs, Hback, Wseat, Lseat, Hseat, 1, false);
+			ChairGenerate(FVector2D( starting_x - (Wseat+space)*i, starting_y), Hlegs, Hback, 1, false);
 		}
 	}
 
@@ -88,7 +91,7 @@ void APGCube::Generate(FVector Origin)
 		double starting_y = Origin.Y - Lttop / 2;
 		for (int i = 0; i < N_lr; i++)
 		{
-			ChairGenerate(FVector2D( starting_x - (Wseat+space)*i, starting_y), Hlegs, Hback, Wseat, Lseat, Hseat, -1, false);
+			ChairGenerate(FVector2D( starting_x - (Wseat+space)*i, starting_y), Hlegs, Hback, -1, false);
 		}
 	}
 
@@ -99,7 +102,7 @@ void APGCube::Generate(FVector Origin)
 		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;
 		for (int i = 0; i < N_tb; i++)
 		{
-			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + space) * i), Hlegs, Hback, Wseat, Lseat, Hseat, 1, true);
+			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + space) * i), Hlegs, Hback, 1, true);
 		}
 
 	}
@@ -111,7 +114,7 @@ void APGCube::Generate(FVector Origin)
 		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;
 		for (int i = 0; i < N_tb; i++)
 		{
-			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + space) * i), Hlegs, Hback, Wseat, Lseat, Hseat, -1, true);
+			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + space) * i), Hlegs, Hback, -1, true);
 		}
 	}
 }
@@ -224,13 +227,30 @@ void APGCube::GenerateBack(FVector2D Origin, FVector2D Ds, double starting_heigh
 	}
 }
 
+void APGCube::ReGenerate()
+{
+	for (int i = 0; i < Nsections; i++) {
+		m_Mesh->ClearMeshSection(i);
+	}
+	Nsections = 0;
+	Generate(FVector(0.0, 0.0, 0.0));
+}
+
+//void APGCube::Remove()
+//{
+//	for (int i = 0; i < Nsections; i++) {
+//		m_Mesh->ClearMeshSection(i);
+//	}
+//	Nsections = 0;
+//}
+
 //void APGCube::GenerateFromClick(FVector origin)
 //{
 //	if (GEngine)
 //		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Generated at :  x : %f, y : %f, z : %f"), (float)origin.X, (float)origin.Y, (float)origin.Z));
 //}
 
-void APGCube::ChairGenerate(FVector2D Origin, double Hlegs, double Hback, double Wseat, double Lseat, double Hseat, int dir, bool rotated)
+void APGCube::ChairGenerate(FVector2D Origin, double Hlegs, double Hback, int dir, bool rotated)
 {
 	if (rotated) {
 		double tmp;
@@ -257,6 +277,13 @@ void APGCube::ChairGenerate(FVector2D Origin, double Hlegs, double Hback, double
 		GenerateBack(FVector2D(Origin.X, Origin.Y + (shift_y * dir)), FVector2D(Wseat, 5), Hlegs, Hback);
 	else
 		GenerateBack(FVector2D(Origin.X + (shift_x * dir), Origin.Y ), FVector2D(5, Lseat), Hlegs, Hback);
+
+	if (rotated) {
+		double tmp;
+		tmp = Wseat;
+		Wseat = Lseat;
+		Lseat = tmp;
+	}
 }
 
 void APGCube::TableGenerate(FVector2D Origin, double Hlegs, double Wttop, double Lttop, double Httop)

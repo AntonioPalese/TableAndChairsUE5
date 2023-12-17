@@ -18,6 +18,20 @@ public:
 	// Sets default values for this actor's properties
 	APGCube();
 
+
+	UPROPERTY(BlueprintReadWrite)
+	double Wseat;
+	UPROPERTY(BlueprintReadWrite)
+	double Lseat;
+	UPROPERTY(BlueprintReadWrite)
+	double Hseat;
+
+	UFUNCTION(BlueprintCallable)
+	void ReGenerate();
+
+	//UFUNCTION(BlueprintCallable)
+	//void Remove();
+
 protected:	
 
 	void PostLoad();
@@ -25,7 +39,7 @@ protected:
 
 	void addQuadMesh(FVector TopRight, FVector BottomRight, FVector TopLeft, FVector BottomLeft, int32& TriangleIndexCount, FProcMeshTangent TangentSetup);
 	void GenerateMeshes(FVector min, FVector max);
-	void ChairGenerate(FVector2D Origin, double Hlegs, double Hback, double Wseat, double Lseat, double Hseat, int dir = 1, bool rotated = false);
+	void ChairGenerate(FVector2D Origin, double Hlegs, double Hback, int dir = 1, bool rotated = false);
 	void TableGenerate(FVector2D Origin, double Hlegs, double Wttop, double Lttop, double Httop);
 	void Generate(FVector Origin);
 
@@ -35,12 +49,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	UProceduralMeshComponent* m_Mesh;
-
-	UPROPERTY(BlueprintReadWrite)
-	double H;
-
-	//UFUNCTION(BlueprintCallable, Category = "TC")
-	//static void GenerateFromClick(FVector origin);
 
 public:	
 
