@@ -18,7 +18,7 @@ public:
 	// Sets default values for this actor's properties
 	APGCube();
 
-
+	// chair
 	UPROPERTY(BlueprintReadWrite)
 	double Wseat;
 	UPROPERTY(BlueprintReadWrite)
@@ -26,11 +26,27 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	double Hseat;
 
+	UPROPERTY(BlueprintReadWrite)
+	double Hlegs;
+	UPROPERTY(BlueprintReadWrite)
+	double Hback;
+
+	// table
+	UPROPERTY(BlueprintReadWrite)
+	double Httop;
+	UPROPERTY(BlueprintReadWrite)
+	double Wttop;
+	UPROPERTY(BlueprintReadWrite)
+	double Lttop;
+	UPROPERTY(BlueprintReadWrite)
+	double HTlegs;
+
+	UPROPERTY(BlueprintReadWrite)
+	double Space;
+
 	UFUNCTION(BlueprintCallable)
 	void ReGenerate();
 
-	//UFUNCTION(BlueprintCallable)
-	//void Remove();
 
 protected:	
 
@@ -39,8 +55,8 @@ protected:
 
 	void addQuadMesh(FVector TopRight, FVector BottomRight, FVector TopLeft, FVector BottomLeft, int32& TriangleIndexCount, FProcMeshTangent TangentSetup);
 	void GenerateMeshes(FVector min, FVector max);
-	void ChairGenerate(FVector2D Origin, double Hlegs, double Hback, int dir = 1, bool rotated = false);
-	void TableGenerate(FVector2D Origin, double Hlegs, double Wttop, double Lttop, double Httop);
+	void ChairGenerate(FVector2D Origin, int dir = 1, bool rotated = false);
+	void TableGenerate(FVector2D Origin);
 	void Generate(FVector Origin);
 
 	void GenerateLeg(FVector2D Origin, FVector2D Ds, double height);

@@ -18,9 +18,25 @@ APGCube::APGCube()
 	m_Mesh->SetNotifyRigidBodyCollision(true);
 	m_Mesh->bUseComplexAsSimpleCollision = false;
 
+	/// chair
 	Wseat = 20.0;
 	Lseat = 20.0;
 	Hseat = 5.0;
+	Hlegs = 40.0;
+	Hback = 50;
+	Space = 20;	
+	//////////////
+	
+	/// table
+	HTlegs = 80;
+	Wttop = 200;
+	Lttop = 200;
+	Httop = 10;
+	//////////////
+
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
+	for (int i = 0; i < 753; i++)
+		m_Mesh->SetMaterial(i, Material.Object.Get());
 }
 
 // This is called when actor is spawned (at runtime or when you drop it into the world in editor)
@@ -29,10 +45,6 @@ void APGCube::PostActorCreated()
 	Super::PostActorCreated();
 	Generate(FVector(0.0, 0.0, 0.0));
 
-
-	//ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
-	//for (int i = 0; i < 753; i++)
-	//	m_Mesh->SetMaterial(i, Material.Object.Get());
 }
 
 // This is called when actor is already in level and map is opened
@@ -41,80 +53,66 @@ void APGCube::PostLoad()
 	Super::PostLoad();
 	Generate(FVector(0.0, 0.0, 0.0));
 
-
-	//ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
-	//for (int i = 0; i < 753; i++)
-	//	m_Mesh->SetMaterial(i, Material.Object.Get());
 }
 
 
 
 void APGCube::Generate(FVector Origin)
 {
-	///// chair
-	double Hlegs = 40.0;
-	double Hback = 50;
-	double space = 20;	
-	////////////////
-	
-	///// table
-	double HlegsTable = 80;
-	double Wttop = 200, Lttop = 200, Httop = 10;
-	////////////////
 
 	assert(HlegsTable - Httop/2 > Hlegs + Hseat/2);
 	assert(Lttop > Lseat);
 
 	double rest_lr = Lseat/2 > 5 ? Lseat/2 : 5;
-	int N_lr = floor((Wttop - rest_lr * 2) / (Wseat + space));
+	int N_lr = floor((Wttop - rest_lr * 2) / (Wseat + Space));
 
 	double rest_tb = 5;
-	int N_tb = floor((Lttop - rest_tb*2) / (Wseat+space));
+	int N_tb = floor((Lttop - rest_tb*2) / (Wseat+ Space));
 
-	TableGenerate(FVector2D(Origin.X, Origin.Y), HlegsTable, Wttop, Lttop, Httop);
+	TableGenerate(FVector2D(Origin.X, Origin.Y));
 
 	{
 		// Chairs along left		
-		double compensation = ((Wttop - rest_lr * 2) - N_lr * (Wseat + space)) / 2;
+		double compensation = ((Wttop - rest_lr * 2) - N_lr * (Wseat + Space)) / 2;
 		double starting_x = Origin.X + Wttop/2 - rest_lr -Wseat / 2 - compensation;
 		double starting_y = Origin.Y + Lttop / 2;
 		for (int i = 0; i < N_lr; i++)
 		{
-			ChairGenerate(FVector2D( starting_x - (Wseat+space)*i, starting_y), Hlegs, Hback, 1, false);
+			ChairGenerate(FVector2D( starting_x - (Wseat+ Space)*i, starting_y), 1, false);
 		}
 	}
 
 	{
 		// Chairs along right		
-		double compensation = ((Wttop - rest_lr * 2) - N_lr * (Wseat + space)) / 2;
+		double compensation = ((Wttop - rest_lr * 2) - N_lr * (Wseat + Space)) / 2;
 		double starting_x = Origin.X + Wttop / 2 - rest_lr - Wseat / 2 - compensation;
 		double starting_y = Origin.Y - Lttop / 2;
 		for (int i = 0; i < N_lr; i++)
 		{
-			ChairGenerate(FVector2D( starting_x - (Wseat+space)*i, starting_y), Hlegs, Hback, -1, false);
+			ChairGenerate(FVector2D( starting_x - (Wseat+ Space)*i, starting_y), -1, false);
 		}
 	}
 
 	{
 		// Chairs along top
-		double compensation = ((Lttop - rest_tb * 2) - N_tb * (Wseat + space)) / 2;
+		double compensation = ((Lttop - rest_tb * 2) - N_tb * (Wseat + Space)) / 2;
 		double starting_x = Origin.X + Wttop / 2;
 		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;
 		for (int i = 0; i < N_tb; i++)
 		{
-			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + space) * i), Hlegs, Hback, 1, true);
+			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + Space) * i), 1, true);
 		}
 
 	}
 
 	{	
 		// Chairs along bottom
-		double compensation = ((Lttop - rest_tb * 2) - N_tb * (Wseat + space)) / 2;
+		double compensation = ((Lttop - rest_tb * 2) - N_tb * (Wseat + Space)) / 2;
 		double starting_x = Origin.X - Wttop / 2;
 		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;
 		for (int i = 0; i < N_tb; i++)
 		{
-			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + space) * i), Hlegs, Hback, -1, true);
+			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + Space) * i), -1, true);
 		}
 	}
 }
@@ -250,7 +248,7 @@ void APGCube::ReGenerate()
 //		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Generated at :  x : %f, y : %f, z : %f"), (float)origin.X, (float)origin.Y, (float)origin.Z));
 //}
 
-void APGCube::ChairGenerate(FVector2D Origin, double Hlegs, double Hback, int dir, bool rotated)
+void APGCube::ChairGenerate(FVector2D Origin, int dir, bool rotated)
 {
 	if (rotated) {
 		double tmp;
@@ -286,7 +284,7 @@ void APGCube::ChairGenerate(FVector2D Origin, double Hlegs, double Hback, int di
 	}
 }
 
-void APGCube::TableGenerate(FVector2D Origin, double Hlegs, double Wttop, double Lttop, double Httop)
+void APGCube::TableGenerate(FVector2D Origin)
 {
 	/*
 	A table is defined as a geometry that has :
@@ -297,10 +295,10 @@ void APGCube::TableGenerate(FVector2D Origin, double Hlegs, double Wttop, double
 	double shift_x = Wttop / 2 - 5;
 	double shift_y = Lttop / 2 - 5;
 
-	GenerateLeg(FVector2D(Origin.X - shift_x, Origin.Y - shift_y), FVector2D(5, 5), Hlegs);
-	GenerateLeg(FVector2D(Origin.X - shift_x, Origin.Y + shift_y), FVector2D(5, 5), Hlegs);
-	GenerateLeg(FVector2D(Origin.X + shift_x, Origin.Y - shift_y), FVector2D(5, 5), Hlegs);
-	GenerateLeg(FVector2D(Origin.X + shift_x, Origin.Y + shift_y), FVector2D(5, 5), Hlegs);
+	GenerateLeg(FVector2D(Origin.X - shift_x, Origin.Y - shift_y), FVector2D(5, 5), HTlegs);
+	GenerateLeg(FVector2D(Origin.X - shift_x, Origin.Y + shift_y), FVector2D(5, 5), HTlegs);
+	GenerateLeg(FVector2D(Origin.X + shift_x, Origin.Y - shift_y), FVector2D(5, 5), HTlegs);
+	GenerateLeg(FVector2D(Origin.X + shift_x, Origin.Y + shift_y), FVector2D(5, 5), HTlegs);
 
-	GenerateSeat(FVector(Origin.X, Origin.Y, Hlegs), FVector(Wttop, Lttop, Httop));
+	GenerateSeat(FVector(Origin.X, Origin.Y, HTlegs), FVector(Wttop, Lttop, Httop));
 }
