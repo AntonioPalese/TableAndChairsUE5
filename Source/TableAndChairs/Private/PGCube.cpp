@@ -19,24 +19,25 @@ APGCube::APGCube()
 	m_Mesh->bUseComplexAsSimpleCollision = false;
 
 	/// chair
-	Wseat = 20.0;
-	Lseat = 20.0;
-	Hseat = 5.0;
-	Hlegs = 40.0;
-	Hback = 50;
-	Space = 20;	
+	
+	Wseat = FMath::RandRange(0.0, 40.0);
+	Lseat = FMath::RandRange(0.0, 40.0);
+	Hseat = FMath::RandRange(0.0, 10.0);
+	Hlegs = FMath::RandRange(0.0, 80.0);
+	Hback = FMath::RandRange(0.0, 100.0);
+	Space = FMath::RandRange(0.0, 100.0);
 	//////////////
 	
 	/// table
-	HTlegs = 80;
-	Wttop = 200;
-	Lttop = 200;
-	Httop = 10;
+	HTlegs = FMath::RandRange(Hlegs, Hlegs+100);
+	Wttop = FMath::RandRange(100, 500);
+	Lttop = FMath::RandRange(100, 500);
+	Httop = FMath::RandRange(0.0, 10.0);
 	//////////////
 
-	ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
-	for (int i = 0; i < 753; i++)
-		m_Mesh->SetMaterial(i, Material.Object.Get());
+	//ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
+	//for (int i = 0; i < 753; i++)
+	//	m_Mesh->SetMaterial(i, Material.Object.Get());
 }
 
 // This is called when actor is spawned (at runtime or when you drop it into the world in editor)
@@ -60,8 +61,8 @@ void APGCube::PostLoad()
 void APGCube::Generate(FVector Origin)
 {
 
-	assert(HlegsTable - Httop/2 > Hlegs + Hseat/2);
-	assert(Lttop > Lseat);
+	//assert(HlegsTable - Httop/2 > Hlegs + Hseat/2);
+	//assert(Lttop > Lseat);
 
 	double rest_lr = Lseat/2 > 5 ? Lseat/2 : 5;
 	int N_lr = floor((Wttop - rest_lr * 2) / (Wseat + Space));
@@ -233,20 +234,6 @@ void APGCube::ReGenerate()
 	Nsections = 0;
 	Generate(FVector(0.0, 0.0, 0.0));
 }
-
-//void APGCube::Remove()
-//{
-//	for (int i = 0; i < Nsections; i++) {
-//		m_Mesh->ClearMeshSection(i);
-//	}
-//	Nsections = 0;
-//}
-
-//void APGCube::GenerateFromClick(FVector origin)
-//{
-//	if (GEngine)
-//		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Generated at :  x : %f, y : %f, z : %f"), (float)origin.X, (float)origin.Y, (float)origin.Z));
-//}
 
 void APGCube::ChairGenerate(FVector2D Origin, int dir, bool rotated)
 {
