@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "PGCube.h"
+#include "TableAndChairs.h"
 #include <assert.h>
 
 // Sets default values
@@ -19,25 +18,21 @@ TableAndChairs::TableAndChairs()
 	m_Mesh->bUseComplexAsSimpleCollision = false;
 
 	/// chair
-	
-	Wseat = FMath::RandRange(0.0, 40.0);
-	Lseat = FMath::RandRange(0.0, 40.0);
-	Hseat = FMath::RandRange(0.0, 10.0);
-	Hlegs = FMath::RandRange(0.0, 80.0);
-	Hback = FMath::RandRange(0.0, 100.0);
-	Space = FMath::RandRange(0.0, 100.0);
+	Wseat = FMath::RandRange(20.0, 60.0);
+	Lseat = FMath::RandRange(20.0, 60.0);
+	Hseat = FMath::RandRange(5.0, 20.0);
+	Hlegs = FMath::RandRange(60.0, 120.0);
+	Hback = FMath::RandRange(40.0, 100.0);
 	//////////////
 	
 	/// table
-	HTlegs = FMath::RandRange(Hlegs, Hlegs+100);
-	Wttop = FMath::RandRange(100, 500);
-	Lttop = FMath::RandRange(100, 500);
-	Httop = FMath::RandRange(0.0, 10.0);
+	HTlegs = FMath::RandRange(Hlegs, Hlegs + 100.0);
+	Wttop = FMath::RandRange(Wseat, Wseat + 500.0);
+	Lttop = FMath::RandRange(Lseat, Lseat + 500.0);
+	Httop = FMath::RandRange(10.0, 30.0);
 	//////////////
 
-	//ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
-	//for (int i = 0; i < 753; i++)
-	//	m_Mesh->SetMaterial(i, Material.Object.Get());
+	Space = FMath::RandRange(5.0, Wseat);
 }
 
 // This is called when actor is spawned (at runtime or when you drop it into the world in editor)
@@ -68,7 +63,7 @@ void TableAndChairs::Generate(FVector Origin)
 	double rest_tb = 5;
 	int N_tb = floor((Lttop - rest_tb*2) / (Wseat+ Space));
 
-	TableGenerate(FVector2D(Origin.X, Origin.Y));
+	TableGenerate(FVector2D(Origin.X, Origin.Y), 0.0);
 
 	{
 		// Chairs along left		
@@ -127,10 +122,7 @@ void TableAndChairs::ReGenerate()
 
 void TableAndChairs::ChairGenerate(FVector2D Origin, double angle)
 {
-	double shift_x = Wseat/2-5;
-	double shift_y = Lseat/2-5;
-
-	Chair ch(FVector(Origin.X, Origin.Y, 0.0), ChairData::Leg{5.0, 5.0, Hlegs}, Chair::Seat{Wseat, LSeat, Hseat}, ChairData::Back{Wseat, 5.0, Hback}, 0.0, Nsections, m_Mesh);
+	Chair ch(FVector(Origin.X, Origin.Y, 0.0), ChairData::Leg{5.0, 5.0, Hlegs}, Chair::Seat{Wseat, Lseat, Hseat}, ChairData::Back{Wseat, 5.0, Hback}, 0.0, Nsections, m_Mesh);
 
 	if (angle != 0.0)
 		ch.rotate(angle);
@@ -138,7 +130,7 @@ void TableAndChairs::ChairGenerate(FVector2D Origin, double angle)
 	ch.generate();
 }
 
-void TableAndChairs::TableGenerate(FVector2D Origin)
+void TableAndChairs::TableGenerate(FVector2D Origin, double angle)
 {
 	/*
 	A table is defined as a geometry that has :
@@ -146,13 +138,10 @@ void TableAndChairs::TableGenerate(FVector2D Origin)
 	�	4 Legs with a fixed width and length, and a variable height parameter
 	*/
 
-	double shift_x = Wttop / 2 - 5;
-	double shift_y = Lttop / 2 - 5;
+	Table t(FVector(Origin.X, Origin.Y, 0.0), TableData::Leg{5.0, 5.0, HTlegs}, TableData::Top{Wttop, Lttop, Httop}, 0.0, Nsections, m_Mesh);
 
-	GenerateLeg(FVector2D(Origin.X - shift_x, Origin.Y - shift_y), FVector2D(5, 5), HTlegs);
-	GenerateLeg(FVector2D(Origin.X - shift_x, Origin.Y + shift_y), FVector2D(5, 5), HTlegs);
-	GenerateLeg(FVector2D(Origin.X + shift_x, Origin.Y - shift_y), FVector2D(5, 5), HTlegs);
-	GenerateLeg(FVector2D(Origin.X + shift_x, Origin.Y + shift_y), FVector2D(5, 5), HTlegs);
-
-	GenerateSeat(FVector(Origin.X, Origin.Y, HTlegs), FVector(Wttop, Lttop, Httop));
+	if (angle != 0.0)
+		t.rotate(angle);
+	
+	t.generate();
 }

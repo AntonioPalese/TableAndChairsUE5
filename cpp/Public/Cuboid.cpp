@@ -58,6 +58,7 @@ Cuboid::~Cuboid()
 
 void Cuboid::generate()
 {
+    m_Mesh->SetMaterial(Nsections, m_Material.Object.Get())
     m_Mesh->CreateMeshSection_LinearColor(Nsections++, m_Vertexes, m_Triangles, m_Normals, m_UVs, Colors, m_Tangents, true);
 }
 

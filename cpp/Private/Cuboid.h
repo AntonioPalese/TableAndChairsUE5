@@ -27,5 +27,6 @@ private:
     int& Nsections;
 
     UProceduralMeshComponent* m_Mesh;
+    ConstructorHelpers::FObjectFinder<UMaterialInterface> m_Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
 };
 

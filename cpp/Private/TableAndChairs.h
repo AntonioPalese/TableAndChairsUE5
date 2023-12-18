@@ -6,10 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "ProceduralMeshComponent.h"
 #include "Engine/GameEngine.h"
-#include "PGCube.generated.h"
-
 #include "Chair.h"
-//#include "Table.h"
+#include "Table.h"
+#include "PGCube.generated.h"
 
 
 UCLASS(Blueprintable)
@@ -55,20 +54,12 @@ protected:
 	void PostLoad();
 	void PostActorCreated();
 
-	void addQuadMesh(FVector TopRight, FVector BottomRight, FVector TopLeft, FVector BottomLeft, int32& TriangleIndexCount, FProcMeshTangent TangentSetup);
-	void GenerateMeshes(FVector min, FVector max);
-	void ChairGenerate(FVector2D Origin, int dir = 1, bool rotated = false);
-	void TableGenerate(FVector2D Origin);
+	void ChairGenerate(FVector2D Origin, double angle);
+	void TableGenerate(FVector2D Origin, double angle);
 	void Generate(FVector Origin);
-
-	void GenerateLeg(FVector2D Origin, FVector2D Ds, double height);
-	void GenerateSeat(FVector Origin, FVector Ds);
-	void GenerateBack(FVector2D Origin, FVector2D Ds, double starting_height, double height);
 
 	UPROPERTY(VisibleAnywhere)
 	UProceduralMeshComponent* m_Mesh;
-
-public:	
 
 private:
 	int32 Nsections = 0;
