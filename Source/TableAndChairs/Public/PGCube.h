@@ -44,7 +44,7 @@ public:
 	double Space;
 
 	UFUNCTION(BlueprintCallable)
-	void ReGenerate();
+	void Regenerate();
 
 
 protected:	

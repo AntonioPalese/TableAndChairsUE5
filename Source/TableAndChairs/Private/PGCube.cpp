@@ -19,25 +19,21 @@ APGCube::APGCube()
 	m_Mesh->bUseComplexAsSimpleCollision = false;
 
 	/// chair
-	
-	Wseat = FMath::RandRange(0.0, 40.0);
-	Lseat = FMath::RandRange(0.0, 40.0);
-	Hseat = FMath::RandRange(0.0, 10.0);
-	Hlegs = FMath::RandRange(0.0, 80.0);
-	Hback = FMath::RandRange(0.0, 100.0);
-	Space = FMath::RandRange(0.0, 100.0);
-	//////////////
-	
-	/// table
-	HTlegs = FMath::RandRange(Hlegs, Hlegs+100);
-	Wttop = FMath::RandRange(100, 500);
-	Lttop = FMath::RandRange(100, 500);
-	Httop = FMath::RandRange(0.0, 10.0);
+	Wseat = FMath::RandRange(20.0, 60.0);
+	Lseat = FMath::RandRange(20.0, 60.0);
+	Hseat = FMath::RandRange(5.0, 20.0);
+	Hlegs = FMath::RandRange(60.0, 120.0);
+	Hback = FMath::RandRange(40.0, 100.0);
 	//////////////
 
-	//ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
-	//for (int i = 0; i < 753; i++)
-	//	m_Mesh->SetMaterial(i, Material.Object.Get());
+	/// table
+	HTlegs = FMath::RandRange(Hlegs, Hlegs + 100.0);
+	Wttop = FMath::RandRange(Wseat, Wseat + 300);
+	Lttop = FMath::RandRange(Lseat, Lseat + 300);
+	Httop = FMath::RandRange(10.0, 30.0);
+	//////////////
+
+	Space = FMath::RandRange(5.0, Wseat);
 }
 
 // This is called when actor is spawned (at runtime or when you drop it into the world in editor)
@@ -226,7 +222,7 @@ void APGCube::GenerateBack(FVector2D Origin, FVector2D Ds, double starting_heigh
 	}
 }
 
-void APGCube::ReGenerate()
+void APGCube::Regenerate()
 {
 	for (int i = 0; i < Nsections; i++) {
 		m_Mesh->ClearMeshSection(i);
