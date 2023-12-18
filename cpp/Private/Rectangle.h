@@ -21,7 +21,7 @@ private:
     TArray<Rectangle*> m_Children;
     TArray<int>& m_Triangles;
     TArray<int> m_Indexes;
-    TArray<FVector2D> m_UVs;
-    TArray<FVector> m_Normals;
-    TArray<FProcMeshTangent> m_Tangents;
+    TArray<FVector2D>& m_UVs;
+    TArray<FVector>& m_Normals;
+    TArray<FProcMeshTangent>& m_Tangents;
 };

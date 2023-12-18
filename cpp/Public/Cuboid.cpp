@@ -36,14 +36,14 @@ Cuboid::Cuboid( FVector origin, FVector size, double angle, int nsections, UProc
     m_Children.Add( new Rectangle( FVector( m_Origin.X, m_Origin.Y - dy / 2, m_Origin.Z ), FVector( dx, 0, dz ), 0.0, "xz", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter ) );
     // right    
     for (int i = 0; i < 4; i++){
-        m_Normals.Add(FVector(0.0, 1.0, 0.0));
-        m_Tangents.Add(FProcMeshTangent(0.0, 0.0, 1.0));
+        m_Normals.Add(FVector(0.0, -1.0, 0.0));
+        m_Tangents.Add(FProcMeshTangent(0.0, 0.0, -1.0));
     }
     m_Children.Add( new Rectangle( FVector( m_Origin.X + dx / 2, m_Origin.Y, m_Origin.Z ), FVector( 0, dy, dz ), 0.0, "yz", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter ) );
     // left 
     for (int i = 0; i < 4; i++){
-        m_Normals.Add(FVector(0.0, -1.0, 0.0));   
-        m_Tangents.Add(FProcMeshTangent(0.0, 0.0, -1.0));
+        m_Normals.Add(FVector(0.0, 1.0, 0.0));   
+        m_Tangents.Add(FProcMeshTangent(0.0, 0.0, 1.0));
     }
     m_Children.Add( new Rectangle( FVector( m_Origin.X - dx / 2, m_Origin.Y, m_Origin.Z ), FVector( 0, dy, dz ), 0.0, "yz", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter ) );
 }
@@ -64,7 +64,7 @@ void Cuboid::generate()
 
 void Cuboid::rotate( double angle )
 {
-    return this->rotate( m_Origin, angle );
+    this->rotate( m_Origin, angle );
 }
 
 void Cuboid::rotate( FVector center, double angle )
@@ -72,5 +72,4 @@ void Cuboid::rotate( FVector center, double angle )
     for ( auto c : m_Children ) {
         c->rotate( center, angle );
     }
-    return this;
 }

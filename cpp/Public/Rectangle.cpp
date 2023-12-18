@@ -111,6 +111,4 @@ void Rectangle::rotate( FVector center, double angle )
     for ( auto& c : m_Children ) {
         c->rotate( center, angle );
     }
-
-    return this;
 }
