@@ -1,22 +1,6 @@
 #pragma once
-#include <vector>
 #include <iostream>
 #include <string>
-
-class FVector {
-public:
-    FVector() : X( 0 ), Y( 0 ), Z( 0 ) {}
-    FVector( double x, double y, double z ) : X( x ), Y( y ), Z( z ) {}
-    double X, Y, Z;
-
-};
-
-class FVector2D {
-public:
-    FVector2D() : X( 0 ), Y( 0 ) {}
-    FVector2D( double x, double y) : X( x ), Y( y ) {}
-    double X, Y;
-};
 
 namespace utils {
     FVector rotate( FVector P, double angle );
@@ -24,19 +8,20 @@ namespace utils {
 
 class Rectangle {
 public:
-    Rectangle( FVector origin, FVector size, double angle, std::string mode, std::vector<FVector>& vertexes, std::vector<int>& triangles, int& counter );
+    Rectangle( FVector origin, FVector size, double angle, std::string mode, TArray<FVector>& vertexes, TArray<int>& triangles,  TArray<FVector2D>& normals,  TArray<FVector2D>& uvs, int& counter );
 
-    Rectangle* rotate( FVector center, double angle );
-    Rectangle* rotate( double angle );
-    // void draw();
-    // void _mesh();
+    void rotate( FVector center, double angle );
+    void rotate( double angle );
 private:
     FVector m_Origin;
     FVector m_Size;
     double m_Angle;
 
-    std::vector<FVector>& m_Vertexes;
-    std::vector<Rectangle*> m_Children;
-    std::vector<int>& m_Triangles;
-    std::vector<int> m_Indexes;
+    TArray<FVector>& m_Vertexes;
+    TArray<Rectangle*> m_Children;
+    TArray<int>& m_Triangles;
+    TArray<int> m_Indexes;
+    TArray<FVector2D> m_UVs;
+    TArray<FVector> m_Normals;
+    TArray<FProcMeshTangent> m_Tangents;
 };

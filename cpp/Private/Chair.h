@@ -19,13 +19,16 @@ struct ChairData {
 class Chair
 {
 public:
-    Chair(FVector origin, ChairData::Leg leg, ChairData::Seat seat, ChairData::Back back, double angle);
+    Chair(FVector origin, ChairData::Leg leg, ChairData::Seat seat, ChairData::Back back, double angle, int nsections, UProceduralMeshComponent* mesh);
     ~Chair();
     void generate();
     void rotate( FVector center, double angle );
     void rotate( double angle );
 private:
-    std::vector<Cuboid*> m_Components;
+    TArray<Cuboid*> m_Components;
+    UProceduralMeshComponent* m_Mesh;
     FVector m_Origin;
+    
+    int Nsections;
 };
 

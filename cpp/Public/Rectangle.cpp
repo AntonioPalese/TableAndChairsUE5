@@ -13,14 +13,21 @@ FVector utils::rotate( FVector P, double angle )
     return FVector( P.X*cos( DegreeToRadians( angle ) ) - P.Y*sin( DegreeToRadians( angle ) ), P.X*sin( DegreeToRadians( angle ) ) + P.Y*cos( DegreeToRadians( angle ) ), P.Z );
 }
 
-Rectangle::Rectangle( FVector origin, FVector size, double angle, std::string mode, std::vector<FVector>& vertexes, std::vector<int>& triangles, int& counter ) : m_Vertexes( vertexes ), m_Triangles( triangles )
+Rectangle::Rectangle( FVector origin, FVector size, double angle, std::string mode, TArray<FVector>& vertexes, TArray<int>& triangles, TArray<FVector2D>& normals,  TArray<FVector2D>& tangents, TArray<FVector2D>& uvs, int& counter ) :
+     m_Vertexes( vertexes ), m_Triangles( triangles ), m_Normals(normals), m_Tangents(tangents), m_UVs(uvs)
 {
-    std::vector<std::string> modes{ std::string( "xy" ), std::string( "xz" ), std::string( "yz" ) };
+    TArray<std::string> modes{ std::string( "xy" ), std::string( "xz" ), std::string( "yz" ) };
     assert( std::find(modes.begin(), modes.end(), mode) != modes.end() );
 
     m_Origin = origin;
     m_Size = size;
     m_Angle = angle;
+
+    m_UVs.Add(FVector2D(0.f, 1.f));
+	m_UVs.Add(FVector2D(0.f, 0.f));
+	m_UVs.Add(FVector2D(1.f, 1.f));
+	m_UVs.Add(FVector2D(1.f, 0.f));
+
 
     double dx = m_Size.X / 2;
     double dy = m_Size.Y / 2;
@@ -51,30 +58,30 @@ Rectangle::Rectangle( FVector origin, FVector size, double angle, std::string mo
     int Point3 = counter++;
     int Point4 = counter++;
 
-    m_Vertexes.push_back( p0 );
-    m_Vertexes.push_back( p1 );
-    m_Vertexes.push_back( p2 );
-    m_Vertexes.push_back( p3 );
+    m_Vertexes.Add( p0 );
+    m_Vertexes.Add( p1 );
+    m_Vertexes.Add( p2 );
+    m_Vertexes.Add( p3 );
 
     if ( m_Angle != 0.0 ) {
         this->rotate( m_Angle );
     }
 
-    m_Triangles.push_back( Point1 );
-    m_Triangles.push_back( Point2 );
-    m_Triangles.push_back( Point3 );
+    m_Triangles.Add( Point1 );
+    m_Triangles.Add( Point2 );
+    m_Triangles.Add( Point3 );
                
-    m_Triangles.push_back( Point1 );
-    m_Triangles.push_back( Point3 );
-    m_Triangles.push_back( Point4 );
+    m_Triangles.Add( Point1 );
+    m_Triangles.Add( Point3 );
+    m_Triangles.Add( Point4 );
 
-    m_Indexes.push_back( Point1 );
-    m_Indexes.push_back( Point2 );
-    m_Indexes.push_back( Point3 );
-    m_Indexes.push_back( Point4 );
+    m_Indexes.Add( Point1 );
+    m_Indexes.Add( Point2 );
+    m_Indexes.Add( Point3 );
+    m_Indexes.Add( Point4 );
 }
 
-Rectangle* Rectangle::rotate( FVector center, double angle )
+void Rectangle::rotate( FVector center, double angle )
 {
     FVector p0 = m_Vertexes[m_Indexes[0]];
     FVector p1 = m_Vertexes[m_Indexes[1]];
@@ -107,20 +114,3 @@ Rectangle* Rectangle::rotate( FVector center, double angle )
 
     return this;
 }
-
-Rectangle* Rectangle::rotate( double angle )
-{
-    return this->rotate( m_Origin, angle );
-}
-
-// void Rectangle::draw()
-// {
-//     for(auto& c : m_Children){
-//         c->draw();
-//     }
-
-//     this->_mesh();
-// }
-// void Rectangle::_mesh(){
-//     // UProceduralMeshComponent
-// }

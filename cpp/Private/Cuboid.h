@@ -6,23 +6,26 @@
 
 class Cuboid{
 public:
-    Cuboid( FVector origin, FVector size, double angle );
+    Cuboid( FVector origin, FVector size, double angle, int nsections, UProceduralMeshComponent* mesh);
     ~Cuboid();
     void generate();
-    Cuboid* rotate( FVector center, double angle );
-    Cuboid* rotate( double angle );
+    void rotate( FVector center, double angle );
+    void rotate( double angle );
 private:
     FVector m_Origin;
     FVector m_Size;
     double m_Angle;
 
-    std::vector<Rectangle*> m_Children;
-    std::vector<FVector> m_Vertexes;
-    std::vector<int> m_Triangles;
+    TArray<Rectangle*> m_Children;
+    TArray<FVector> m_Vertexes;
+    TArray<int> m_Triangles;
+    TArray<FVector2D> m_UVs;
+    TArray<FVector> m_Normals;
+    TArray<FProcMeshTangent> m_Tangents;
+
     int m_Counter;
+    int& Nsections;
 
-
-    std::ofstream m_Ofs;
-
+    UProceduralMeshComponent* m_Mesh;
 };
 
