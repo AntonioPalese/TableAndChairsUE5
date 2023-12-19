@@ -8,7 +8,7 @@
 class TABLEANDCHAIRS_API Cuboid
 {
 public:
-    Cuboid(FVector origin, FVector size, double angle, int nsections, UProceduralMeshComponent* mesh, UMaterialInterface* material);
+    Cuboid(FVector origin, FVector size, double angle, int& nsections, UProceduralMeshComponent* mesh, UMaterialInterface* material);
     ~Cuboid();
     void generate();
     void rotate(FVector center, double angle);

@@ -97,7 +97,7 @@ void ATableAndChairActor::Generate(FVector Origin)
 		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;
 		for (int i = 0; i < N_tb; i++)
 		{
-			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + Space) * i), 90.0);
+			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + Space) * i), 270);
 		}
 
 	}
@@ -109,7 +109,7 @@ void ATableAndChairActor::Generate(FVector Origin)
 		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;
 		for (int i = 0; i < N_tb; i++)
 		{
-			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + Space) * i), 270.0);
+			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + Space) * i), 90.0);
 		}
 	}
 }
@@ -126,7 +126,7 @@ void ATableAndChairActor::Regenerate()
 
 void ATableAndChairActor::ChairGenerate(FVector2D Origin, double angle)
 {
-	Chair ch(FVector(Origin.X, Origin.Y, 0.0), ChairData::Leg{5.0, 5.0, Hlegs}, Chair::Seat{Wseat, Lseat, Hseat}, ChairData::Back{Wseat, 5.0, Hback}, 0.0, Nsections, m_Mesh, m_Material);
+	Chair ch(FVector(Origin.X, Origin.Y, 0.0), ChairData::Leg{5.0, 5.0, Hlegs}, ChairData::Seat{Wseat, Lseat, Hseat}, ChairData::Back{Wseat, 5.0, Hback}, 0.0, Nsections, m_Mesh, m_Material);
 
 	if (angle != 0.0)
 		ch.rotate(angle);

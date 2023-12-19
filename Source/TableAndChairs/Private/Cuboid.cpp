@@ -1,6 +1,7 @@
 #include "Cuboid.h"
 
-Cuboid::Cuboid(FVector origin, FVector size, double angle, int nsections, UProceduralMeshComponent* mesh, UMaterialInterface* material) : m_Mesh(mesh), Nsections(nsections), m_Material(material)
+Cuboid::Cuboid(FVector origin, FVector size, double angle, int& nsections, UProceduralMeshComponent* mesh, UMaterialInterface* material) 
+        : m_Mesh(mesh), Nsections(nsections), m_Material(material)
 {
     m_Origin = origin;
     m_Size = size;

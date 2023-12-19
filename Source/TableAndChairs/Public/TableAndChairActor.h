@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Table.h"
+#include "ProceduralMeshComponent.h"
 #include "Chair.h"
+#include "Table.h"
 #include "TableAndChairActor.generated.h"
 
 
@@ -57,7 +58,6 @@ public:
 
 	void ChairGenerate(FVector2D Origin, double angle);
 	void TableGenerate(FVector2D Origin, double angle);
-	void Generate(FVector Origin);
 
 	UPROPERTY(VisibleAnywhere)
 	UProceduralMeshComponent* m_Mesh;
