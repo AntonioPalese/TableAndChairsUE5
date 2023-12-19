@@ -21,20 +21,22 @@ ATableAndChairActor::ATableAndChairActor()
 	ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
 	m_Material = Material.Object.Get();
 
-	/// chair
-	Wseat = FMath::RandRange(20.0, 60.0);
-	Lseat = FMath::RandRange(20.0, 60.0);
-	Hseat = FMath::RandRange(5.0, 20.0);
-	Hlegs = FMath::RandRange(60.0, 120.0);
-	Hback = FMath::RandRange(40.0, 100.0);
-	//////////////
-
 	/// table
-	HTlegs = FMath::RandRange(Hlegs, Hlegs + 100.0);
-	Wttop = FMath::RandRange(Wseat, Wseat + 300);
-	Lttop = FMath::RandRange(Lseat, Lseat + 300);
+	HTlegs = FMath::RandRange(80.0, 120.0);
+	Wttop = FMath::RandRange(200, 800);
+	Lttop = FMath::RandRange(200, 800);
 	Httop = FMath::RandRange(10.0, 30.0);
 	//////////////
+
+	/// chair
+	Wseat = FMath::RandRange(30, 120);
+	Lseat = FMath::RandRange(30, 120);
+	Hseat = FMath::RandRange(5.0, 20.0);
+	Hlegs = FMath::RandRange(60.0, (HTlegs - HTlegs/3) - Hseat);
+	Hback = FMath::RandRange(30.0, 100.0);
+	//////////////
+
+	
 
 	Space = FMath::RandRange(5.0, Wseat);
 }
@@ -126,7 +128,7 @@ void ATableAndChairActor::Regenerate()
 
 void ATableAndChairActor::ChairGenerate(FVector2D Origin, double angle)
 {
-	Chair ch(FVector(Origin.X, Origin.Y, 0.0), ChairData::Leg{5.0, 5.0, Hlegs}, ChairData::Seat{Wseat, Lseat, Hseat}, ChairData::Back{Wseat, 5.0, Hback}, 0.0, Nsections, m_Mesh, m_Material);
+	Chair ch(FVector(Origin.X, Origin.Y, Hlegs/2), ChairData::Leg{5.0, 5.0, Hlegs}, ChairData::Seat{Wseat, Lseat, Hseat}, ChairData::Back{Wseat, 5.0, Hback}, 0.0, Nsections, m_Mesh, m_Material);
 
 	if (angle != 0.0)
 		ch.rotate(angle);
@@ -136,7 +138,7 @@ void ATableAndChairActor::ChairGenerate(FVector2D Origin, double angle)
 
 void ATableAndChairActor::TableGenerate(FVector2D Origin, double angle)
 {
-	Table t(FVector(Origin.X, Origin.Y, 0.0), TableData::Leg{5.0, 5.0, HTlegs}, TableData::Top{Wttop, Lttop, Httop}, 0.0, Nsections, m_Mesh, m_Material);
+	Table t(FVector(Origin.X, Origin.Y, HTlegs/2), TableData::Leg{5.0, 5.0, HTlegs}, TableData::Top{Wttop, Lttop, Httop}, 0.0, Nsections, m_Mesh, m_Material);
 
 	if (angle != 0.0)
 		t.rotate(angle);
