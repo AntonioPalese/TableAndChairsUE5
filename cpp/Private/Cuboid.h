@@ -23,7 +23,7 @@ private:
     TArray<FVector> m_Normals;
     TArray<FProcMeshTangent> m_Tangents;
 
-    int m_Counter;
+    int m_Counter = 0;
     int& Nsections;
 
     UProceduralMeshComponent* m_Mesh;

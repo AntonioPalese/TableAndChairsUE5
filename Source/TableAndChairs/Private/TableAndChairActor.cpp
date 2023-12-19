@@ -39,66 +39,90 @@ void ATableAndChairActor::PostLoad()
 }
 
 void ATableAndChairActor::Generate(FVector Origin)
-{
-	TArray<FVector> m_Vertexes;
-	TArray<int> m_Triangles;
-	TArray<FVector2D> m_UVs;
-	TArray<FVector> m_Normals;
-	TArray<FProcMeshTangent> m_Tangents;
-	TArray<FLinearColor> Colors;
-	int m_Counter = 0;
+{	
+	//assert(HlegsTable - Httop/2 > Hlegs + Hseat/2);
+	//assert(Lttop > Lseat);
 
-	for (int i = 0; i < 24; i++) {
-		Colors.Add(FLinearColor::Green);
+	double rest_lr = Lseat/2 > 5 ? Lseat/2 : 5;
+	int N_lr = floor((Wttop - rest_lr * 2) / (Wseat + Space));
+
+	double rest_tb = 5;
+	int N_tb = floor((Lttop - rest_tb*2) / (Wseat+ Space));
+
+	TableGenerate(FVector2D(Origin.X, Origin.Y), 0.0);
+
+	{
+		// Chairs along left		
+		double compensation = ((Wttop - rest_lr * 2) - N_lr * (Wseat + Space)) / 2;
+		double starting_x = Origin.X + Wttop/2 - rest_lr -Wseat / 2 - compensation;
+		double starting_y = Origin.Y + Lttop / 2;
+		for (int i = 0; i < N_lr; i++)
+		{
+			ChairGenerate(FVector2D( starting_x - (Wseat+ Space)*i, starting_y), 0.0);
+		}
 	}
 
-	// top
-	for(int i = 0; i < 4; i++){
-		m_Normals.Add(FVector(0.0, 0.0, 1.0));
-		m_Tangents.Add(FProcMeshTangent(0.0, 1.0, 0.0));
+	{
+		// Chairs along right		
+		double compensation = ((Wttop - rest_lr * 2) - N_lr * (Wseat + Space)) / 2;
+		double starting_x = Origin.X + Wttop / 2 - rest_lr - Wseat / 2 - compensation;
+		double starting_y = Origin.Y - Lttop / 2;
+		for (int i = 0; i < N_lr; i++)
+		{
+			ChairGenerate(FVector2D( starting_x - (Wseat+ Space)*i, starting_y), 180.0);
+		}
 	}
-	Rectangle top(FVector(0.0, 0.0, 50.0), FVector(100.0, 100.0, 0.0), 0.0, "xy", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter, true);
 
-	// bottom
-	for (int i = 0; i < 4; i++) {
-		m_Normals.Add(FVector(0.0, 0.0, -1.0));
-		m_Tangents.Add(FProcMeshTangent(0.0, -1.0, 0.0));
+	{
+		// Chairs along top
+		double compensation = ((Lttop - rest_tb * 2) - N_tb * (Wseat + Space)) / 2;
+		double starting_x = Origin.X + Wttop / 2;
+		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;
+		for (int i = 0; i < N_tb; i++)
+		{
+			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + Space) * i), 90.0);
+		}
+
 	}
-	Rectangle bottom(FVector(0.0, 0.0, -50.0), FVector(100.0, 100.0, 0.0), 0.0, "xy", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter, false);
 
-	// back
-	for (int i = 0; i < 4; i++) {
-		m_Normals.Add(FVector(1.0, 0.0, 0.0));
-		m_Tangents.Add(FProcMeshTangent(0.0, 1.0, 0.0));
+	{	
+		// Chairs along bottom
+		double compensation = ((Lttop - rest_tb * 2) - N_tb * (Wseat + Space)) / 2;
+		double starting_x = Origin.X - Wttop / 2;
+		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;
+		for (int i = 0; i < N_tb; i++)
+		{
+			ChairGenerate(FVector2D(starting_x , starting_y + (Wseat + Space) * i), 270.0);
+		}
 	}
-	Rectangle back(FVector(50.0, 0.0, 0.0), FVector(0.0, 100.0, 100.0), 0.0, "yz", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter, false);
-
-
-	// front
-	for (int i = 0; i < 4; i++) {
-		m_Normals.Add(FVector(-1.0, 0.0, 0.0));
-		m_Tangents.Add(FProcMeshTangent(0.0, -1.0, 0.0));
-	}
-	Rectangle front(FVector(-50.0, 0.0, 0.0), FVector(0.0, 100.0, 100.0), 0.0, "yz", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter, true);
-
-	// left
-	for (int i = 0; i < 4; i++) {
-		m_Normals.Add(FVector(0.0, 1.0, 0.0));
-		m_Tangents.Add(FProcMeshTangent(0.0, 0.0, 1.0));
-	}
-	Rectangle left(FVector(0.0, 50.0, 0.0), FVector(100.0, 0.0, 100.0), 0.0, "xz", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter, false);
-
-	// right
-	for (int i = 0; i < 4; i++) {
-		m_Normals.Add(FVector(0.0, -1.0, 0.0));
-		m_Tangents.Add(FProcMeshTangent(0.0, 0.0, -1.0));
-	}
-	Rectangle right(FVector(0.0, -50.0, 0.0), FVector(100.0, 0.0, 100.0), 0.0, "xz", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter, true);
-
-
-	
-	m_Mesh->SetMaterial(0, m_Material);
-	m_Mesh->CreateMeshSection_LinearColor(0, m_Vertexes, m_Triangles, m_Normals, m_UVs, Colors, m_Tangents, true);
-
 }
 
+void ATableAndChairActor::Regenerate()
+{
+	for (int i = 0; i < Nsections; i++) {
+		m_Mesh->ClearMeshSection(i);
+	}
+	Nsections = 0;
+	Generate(FVector(0.0, 0.0, 0.0));
+}
+
+
+void ATableAndChairActor::ChairGenerate(FVector2D Origin, double angle)
+{
+	Chair ch(FVector(Origin.X, Origin.Y, 0.0), ChairData::Leg{5.0, 5.0, Hlegs}, Chair::Seat{Wseat, Lseat, Hseat}, ChairData::Back{Wseat, 5.0, Hback}, 0.0, Nsections, m_Mesh, m_Material);
+
+	if (angle != 0.0)
+		ch.rotate(angle);
+	
+	ch.generate();
+}
+
+void ATableAndChairActor::TableGenerate(FVector2D Origin, double angle)
+{
+	Table t(FVector(Origin.X, Origin.Y, 0.0), TableData::Leg{5.0, 5.0, HTlegs}, TableData::Top{Wttop, Lttop, Httop}, 0.0, Nsections, m_Mesh, m_Material);
+
+	if (angle != 0.0)
+		t.rotate(angle);
+	
+	t.generate();
+}
