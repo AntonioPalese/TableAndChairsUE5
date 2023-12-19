@@ -21,7 +21,24 @@ ATableAndChairActor::ATableAndChairActor()
 	ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
 	m_Material = Material.Object.Get();
 
+	/// chair
+	Wseat = FMath::RandRange(20.0, 60.0);
+	Lseat = FMath::RandRange(20.0, 60.0);
+	Hseat = FMath::RandRange(5.0, 20.0);
+	Hlegs = FMath::RandRange(60.0, 120.0);
+	Hback = FMath::RandRange(40.0, 100.0);
+	//////////////
+
+	/// table
+	HTlegs = FMath::RandRange(Hlegs, Hlegs + 100.0);
+	Wttop = FMath::RandRange(Wseat, Wseat + 300);
+	Lttop = FMath::RandRange(Lseat, Lseat + 300);
+	Httop = FMath::RandRange(10.0, 30.0);
+	//////////////
+
+	Space = FMath::RandRange(5.0, Wseat);
 }
+
 
 // This is called when actor is spawned (at runtime or when you drop it into the world in editor)
 void ATableAndChairActor::PostActorCreated()

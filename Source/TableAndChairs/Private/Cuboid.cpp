@@ -15,7 +15,7 @@ Cuboid::Cuboid(FVector origin, FVector size, double angle, int nsections, UProce
 		m_Normals.Add(FVector(0.0, 0.0, 1.0));
 		m_Tangents.Add(FProcMeshTangent(0.0, 1.0, 0.0));
 	}
-    m_Children.Add( new Rectangle(FVector(origin.X, origin.Y, origin.Z + dz / 2), FVector(dz, dy, 0.0), 0.0, "xy", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter, true) );
+    m_Children.Add( new Rectangle(FVector(origin.X, origin.Y, origin.Z + dz / 2), FVector(dx, dy, 0.0), 0.0, "xy", m_Vertexes, m_Triangles, m_Normals, m_Tangents, m_UVs, m_Counter, true) );
    // bottom
 	for (int i = 0; i < 4; i++) {
 		m_Normals.Add(FVector(0.0, 0.0, -1.0));
