@@ -8,6 +8,7 @@ double DegreeToRadians(double degrees) {
     return degrees * (M_PI / 180.0);
 }
 
+// rotation along Z axes
 FVector utils::rotate(FVector P, double angle)
 {
     return FVector(P.X * cos(DegreeToRadians(angle)) - P.Y * sin(DegreeToRadians(angle)), P.X * sin(DegreeToRadians(angle)) + P.Y * cos(DegreeToRadians(angle)), P.Z);

@@ -65,5 +65,7 @@ private:
 
 	UMaterialInterface* m_Material;
 	int32 Nsections = 0;
+	double m_Legs_W;
+	double m_Legs_L;
 
 };
