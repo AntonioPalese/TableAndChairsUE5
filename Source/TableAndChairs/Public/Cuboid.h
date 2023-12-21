@@ -28,7 +28,7 @@ private:
     int m_Counter = 0;
     int& Nsections;
 
-    UProceduralMeshComponent* m_Mesh;   
-    UMaterialInterface* m_Material; 
+    UProceduralMeshComponent* m_Mesh;
+    UMaterialInterface* m_Material;
 };
 

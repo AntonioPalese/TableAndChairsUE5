@@ -7,7 +7,7 @@ Table::Table(FVector origin, TableData::Leg leg, TableData::Top top, double angl
     m_Components.Add(new Cuboid(FVector(origin.X + top.WTop / 2, origin.Y + top.LTop / 2, origin.Z), FVector(leg.WLegs, leg.LLegs, leg.HLegs), angle, Nsections, m_Mesh, m_Material));
     m_Components.Add(new Cuboid(FVector(origin.X + top.WTop / 2, origin.Y - top.LTop / 2, origin.Z), FVector(leg.WLegs, leg.LLegs, leg.HLegs), angle, Nsections, m_Mesh, m_Material));
     m_Components.Add(new Cuboid(FVector(origin.X - top.WTop / 2, origin.Y + top.LTop / 2, origin.Z), FVector(leg.WLegs, leg.LLegs, leg.HLegs), angle, Nsections, m_Mesh, m_Material));
-                 
+
     m_Components.Add(new Cuboid(FVector(origin.X, origin.Y, origin.Z + leg.HLegs / 2 + top.HTop / 2), FVector(top.WTop + leg.WLegs, top.LTop + leg.WLegs, top.HTop), angle, Nsections, m_Mesh, m_Material));
 }
 

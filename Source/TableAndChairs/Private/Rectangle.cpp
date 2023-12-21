@@ -81,7 +81,7 @@ Rectangle::Rectangle(FVector origin, FVector size, double angle, FString mode, T
         m_Triangles.Add(Point1);
         m_Triangles.Add(Point2);
         m_Triangles.Add(Point3);
-        
+
         m_Triangles.Add(Point1);
         m_Triangles.Add(Point3);
         m_Triangles.Add(Point4);

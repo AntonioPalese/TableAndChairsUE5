@@ -7,9 +7,9 @@ Chair::Chair(FVector origin, ChairData::Leg leg, ChairData::Seat seat, ChairData
     m_Components.Add(new Cuboid(FVector(origin.X + seat.WSeat / 2, origin.Y + seat.LSeat / 2, origin.Z), FVector(leg.WLegs, leg.LLegs, leg.HLegs), angle, Nsections, m_Mesh, m_Material));
     m_Components.Add(new Cuboid(FVector(origin.X + seat.WSeat / 2, origin.Y - seat.LSeat / 2, origin.Z), FVector(leg.WLegs, leg.LLegs, leg.HLegs), angle, Nsections, m_Mesh, m_Material));
     m_Components.Add(new Cuboid(FVector(origin.X - seat.WSeat / 2, origin.Y + seat.LSeat / 2, origin.Z), FVector(leg.WLegs, leg.LLegs, leg.HLegs), angle, Nsections, m_Mesh, m_Material));
-                
+
     m_Components.Add(new Cuboid(FVector(origin.X, origin.Y, origin.Z + leg.HLegs / 2 + seat.HSeat / 2), FVector(seat.WSeat + leg.WLegs, seat.LSeat + leg.WLegs, seat.HSeat), angle, Nsections, m_Mesh, m_Material));
-                 
+
     m_Components.Add(new Cuboid(FVector(origin.X, origin.Y + seat.LSeat / 2, origin.Z + leg.HLegs / 2 + back.HBack / 2), FVector(back.WBack, back.LBack, back.HBack), angle, Nsections, m_Mesh, m_Material));
 }
 

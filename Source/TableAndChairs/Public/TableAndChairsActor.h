@@ -7,17 +7,16 @@
 #include "ProceduralMeshComponent.h"
 #include "Chair.h"
 #include "Table.h"
-#include "TableAndChairActor.generated.h"
-
+#include "TableAndChairsActor.generated.h"
 
 UCLASS()
-class TABLEANDCHAIRS_API ATableAndChairActor : public AActor
+class TABLEANDCHAIRS_API ATableAndChairsActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
-	ATableAndChairActor();
+	ATableAndChairsActor();
 
 	// chair
 	UPROPERTY(BlueprintReadWrite)
@@ -53,7 +52,7 @@ protected:
 	void PostLoad();
 	void PostActorCreated();
 
-public:	
+public:
 	void Generate(FVector Origin);
 
 	void ChairGenerate(FVector2D Origin, double angle);
