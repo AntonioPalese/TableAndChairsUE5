@@ -65,37 +65,44 @@ void ATableAndChairActor::Generate(FVector Origin)
 	// Priority is given to generate along left / right sides
 	double rest_lr = Lseat/2 > m_Legs_L ? Lseat/2 : m_Legs_L;	
 	// number of feasible chairs on left / right sides 
-	int N_lr = int(floor((Wttop - rest_lr * 2) / (Wseat + Space)));
+	int N_lr = int(floor((Wttop - rest_lr * 2) / (Wseat)));
+	N_lr = N_lr > 0 ?  int(floor((Wttop - rest_lr * 2) / (Wseat + Space - Space / N_lr))) : 0;
+	
 
 	// Along top / bottom sides, chairs are generated only if they don't collide with left / right ones (according to Space)
 	double rest_tb = m_Legs_L;
 	// number of feasible chairs on tob / bottom sides 
-	int N_tb = int(floor((Lttop - rest_tb * 2) / (Wseat + Space)));
+	int N_tb = int(floor((Lttop - rest_tb * 2) / (Wseat)));
+	N_tb = N_tb > 0 ? int(floor((Lttop - rest_tb * 2) / (Wseat + Space - Space / N_tb))) : 0;
 
 	TableGenerate(FVector2D(Origin.X, Origin.Y), 0.0);
 
 	{
 		// Chairs along left / right	
 		// compensation needed for centering
-		double compensation = (space + (Wttop - rest_lr * 2) % (Wseat + Space)) / 2;
-		double starting_x = Origin.X + Wttop / 2 - rest_lr - Wseat / 2 - compensation;
+		double total = Wttop - rest_lr * 2;
+		double occupied = (N_lr - 1)*(Wseat+Space) + Wseat;
+		double compensation = total - occupied; 
+		double starting_x = Origin.X + Wttop / 2 - Wseat/2 - rest_lr - compensation / 2;
 		double starting_y_l = Origin.Y + Lttop / 2;
 		double starting_y_r = Origin.Y - Lttop / 2;
 
 		for (int i = 0; i < N_lr; i++)
 		{
-			ChairGenerate(FVector2D( starting_x - (Wseat+ Space) * i, starting_y_l), 0.0);
-			ChairGenerate(FVector2D( starting_x - (Wseat+ Space) * i, starting_y_r), 180.0);
+			ChairGenerate(FVector2D( starting_x - (Wseat + Space) * i, starting_y_l), 0.0);
+			ChairGenerate(FVector2D( starting_x - (Wseat + Space) * i, starting_y_r), 180.0);
 		}		
 	}
 
 	{
 		// Chairs along top / bottom	
 		// compensation needed for centering
-		double compensation = (space + (Lttop - rest_lr * 2) % (Wseat + Space)) / 2;
+		double total = Lttop - rest_tb * 2;
+		double occupied = (N_tb - 1)*(Wseat+Space) + Wseat;
+		double compensation = total - occupied; 
 		double starting_x_t = Origin.X + Wttop / 2;
 		double starting_x_b = Origin.X - Wttop / 2;
-		double starting_y = Origin.Y - Lttop / 2 + rest_tb + Wseat / 2 + compensation;	
+		double starting_y = Origin.Y - Lttop / 2 + Wseat/2 + rest_tb + compensation / 2;	
 
 		for (int i = 0; i < N_tb; i++)
 		{
