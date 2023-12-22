@@ -22,4 +22,5 @@ Chair:
 * 	Hback : Chair back height : [30.0, 100.0]
 
 
-The fixed paramters (table legs width and higth, chair legs width and hight) have been hardcoded to 5.0, 5.0.
+The fixed parameters (table legs width and length, chair legs width and length, back width ) have been hardcoded to 5.0.
+Back length is fixes to chair width 
