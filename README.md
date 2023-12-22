@@ -1,6 +1,6 @@
 # TableAndChairsUE5
 
-Open the ".uproject" file for starting up the editor.
+Unreal Engine Version : 5.3
 
 The project has been conducted using both C++ for procedural generation and Blueprint for user input / GUI management.
 
@@ -22,5 +22,5 @@ Chair:
 * 	Hback : Chair back height : [30.0, 100.0]
 
 
-The fixed parameters (table legs width and length, chair legs width and length, back width ) have been hardcoded to 5.0.
-Back length is fixes to chair width 
+The fixed parameters (table legs width and length, chair legs width and length, chair back width) have been hardcoded to 5.0.
+Back length is fixed to chair width.
