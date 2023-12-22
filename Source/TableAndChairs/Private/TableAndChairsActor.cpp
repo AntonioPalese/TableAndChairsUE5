@@ -4,8 +4,12 @@
 // Sets default values
 ATableAndChairsActor::ATableAndChairsActor()
 {
+	m_ThisSchene = CreateDefaultSubobject<USceneComponent>(TEXT("RootScene"));
+	RootComponent = m_ThisSchene;
+
 	m_Mesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("GeneratedMesh"));
-	RootComponent = m_Mesh;
+	m_Mesh->SetupAttachment(RootComponent);
+
 	m_Mesh->bUseAsyncCooking = true;
 	m_Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	m_Mesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);

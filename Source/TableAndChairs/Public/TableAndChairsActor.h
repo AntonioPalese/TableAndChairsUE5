@@ -61,6 +61,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	UProceduralMeshComponent* m_Mesh;
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* m_ThisSchene;
 private:
 
 	UMaterialInterface* m_Chairs_Material;
