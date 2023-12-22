@@ -48,6 +48,7 @@ ATableAndChairsActor::ATableAndChairsActor()
 void ATableAndChairsActor::PostActorCreated()
 {
 	Super::PostActorCreated();
+	// spawning coordinates are (0,0,0) because position retrieving is left to "Hit Location" parameter in "LineTraceByChannel" function
 	Generate(FVector(0.0, 0.0, 0.0));
 
 }
@@ -56,6 +57,7 @@ void ATableAndChairsActor::PostActorCreated()
 void ATableAndChairsActor::PostLoad()
 {
 	Super::PostLoad();
+	// spawning coordinates are (0,0,0) because position retrieving is left to "Hit Location" parameter in "LineTraceByChannel" function
 	Generate(FVector(0.0, 0.0, 0.0));
 }
 
