@@ -1,12 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "TableAndChairsActor.h"
 
 // Sets default values
 ATableAndChairsActor::ATableAndChairsActor()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	m_Mesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("GeneratedMesh"));
 	RootComponent = m_Mesh;
 	m_Mesh->bUseAsyncCooking = true;
@@ -17,6 +14,7 @@ ATableAndChairsActor::ATableAndChairsActor()
 	m_Mesh->SetNotifyRigidBodyCollision(true);
 	m_Mesh->bUseComplexAsSimpleCollision = false;
 
+	// setting materials
 	ConstructorHelpers::FObjectFinder<UMaterialInterface> Table_Material(TEXT("/Script/Engine.Material'/Game/Textures/bark_willow_diff_4k_Mat.bark_willow_diff_4k_Mat'"));
 	ConstructorHelpers::FObjectFinder<UMaterialInterface> Chairs_Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
 	m_Table_Material = Table_Material.Object.Get();
@@ -37,11 +35,11 @@ ATableAndChairsActor::ATableAndChairsActor()
 	Hback = FMath::RandRange(30.0, 100.0);
 	//////////////
 
-	// Hardcoded Parameters
+	// hardcoded Parameters
 	m_Legs_L = 5.0;
 	m_Legs_W = 5.0;
 
-
+	// space between chairs
 	Space = FMath::RandRange(5.0, Wseat);
 }
 
@@ -61,6 +59,10 @@ void ATableAndChairsActor::PostLoad()
 	Generate(FVector(0.0, 0.0, 0.0));
 }
 
+/**
+	 * Procedurally generates a TableAndChairsActor
+	 * @param Origin : origin points on xy plane (z coordinate is always 0)
+**/
 void ATableAndChairsActor::Generate(FVector Origin)
 {
 	// Priority is given to generate along left / right sides
@@ -113,6 +115,9 @@ void ATableAndChairsActor::Generate(FVector Origin)
 	}
 }
 
+/**
+	 * Procedurally re-generates the structure, on "Generate" clicking.
+**/
 void ATableAndChairsActor::Regenerate()
 {
 	for (int i = 0; i < Nsections; i++) {
@@ -123,6 +128,11 @@ void ATableAndChairsActor::Regenerate()
 }
 
 
+/**
+	 * Procedurally generates a chair
+	 * @param angle : rotation angle
+	 * @param Origin : origin points on xy plane (z coordinate is always 0)
+**/
 void ATableAndChairsActor::ChairGenerate(FVector2D Origin, double angle)
 {
 	Chair ch(FVector(Origin.X, Origin.Y, Hlegs / 2), ChairData::Leg{ m_Legs_W, m_Legs_L, Hlegs }, ChairData::Seat{ Wseat, Lseat, Hseat }, ChairData::Back{ Wseat, m_Legs_L, Hback }, 0.0, Nsections, m_Mesh, m_Chairs_Material);
@@ -133,6 +143,11 @@ void ATableAndChairsActor::ChairGenerate(FVector2D Origin, double angle)
 	ch.generate();
 }
 
+/**
+	 * Procedurally generates a table
+	 * @param angle : rotation angle
+	 * @param Origin : origin points on xy plane (z coordinate is always 0)
+**/
 void ATableAndChairsActor::TableGenerate(FVector2D Origin, double angle)
 {
 	Table t(FVector(Origin.X, Origin.Y, HTlegs / 2), TableData::Leg{ m_Legs_W, m_Legs_L, HTlegs }, TableData::Top{ Wttop, Lttop, Httop }, 0.0, Nsections, m_Mesh, m_Table_Material);

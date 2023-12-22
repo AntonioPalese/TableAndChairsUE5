@@ -17,9 +17,6 @@ FVector utils::rotate(FVector P, double angle)
 Rectangle::Rectangle(FVector origin, FVector size, double angle, FString mode, TArray<FVector>& vertexes, TArray<int>& triangles, TArray<FVector>& normals, TArray<FProcMeshTangent>& tangents, TArray<FVector2D>& uvs, int& counter, bool clockwise) :
     m_Vertexes(vertexes), m_Triangles(triangles), m_Normals(normals), m_Tangents(tangents), m_UVs(uvs)
 {
-    //TArray<FString> modes{ FString("xy"), FString("xz"), FString("yz") };
-    //assert(std::find(modes.begin(), modes.end(), mode) != modes.end());
-
     m_Origin = origin;
     m_Size = size;
     m_Angle = angle;
@@ -93,6 +90,11 @@ Rectangle::Rectangle(FVector origin, FVector size, double angle, FString mode, T
     m_Indexes.Add(Point4);
 }
 
+/**
+     * Rotates the Rectangle algong the z axes respect to the center parameter.
+     * @param angle : rotation angle
+     * @param center : rotation center
+**/
 void Rectangle::rotate(FVector center, double angle)
 {
     FVector p0 = m_Vertexes[m_Indexes[0]];
@@ -122,6 +124,10 @@ void Rectangle::rotate(FVector center, double angle)
 
 }
 
+/**
+     * Rotates the Rectangle algong the z axes respect to its origin.
+     * @param angle : rotation angle
+**/
 void Rectangle::rotate(double angle)
 {
     this->rotate(m_Origin, angle);

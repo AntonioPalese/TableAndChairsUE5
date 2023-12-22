@@ -57,6 +57,10 @@ Cuboid::~Cuboid()
     }
 }
 
+
+/**
+     * Procedural generates the cuboid.
+**/
 void Cuboid::generate()
 {
     TArray<FLinearColor> Colors;
@@ -66,11 +70,21 @@ void Cuboid::generate()
     m_Mesh->CreateMeshSection_LinearColor(Nsections++, m_Vertexes, m_Triangles, m_Normals, m_UVs, Colors, m_Tangents, true);
 }
 
+
+/**
+     * Rotates the cuboid algong the z axes respect to the cuboid origin.
+     * @param angle : rotation angle
+**/
 void Cuboid::rotate(double angle)
 {
     this->rotate(m_Origin, angle);
 }
 
+/**
+     * Rotates the cuboid algong the z axes respect to the center parameter.
+     * @param angle : rotation angle
+     * @param center : rotation center
+**/
 void Cuboid::rotate(FVector center, double angle)
 {
     for (auto c : m_Children) {

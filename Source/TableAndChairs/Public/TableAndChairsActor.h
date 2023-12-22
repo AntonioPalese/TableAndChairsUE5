@@ -41,6 +41,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	double HTlegs;
 
+	// space
 	UPROPERTY(BlueprintReadWrite)
 	double Space;
 

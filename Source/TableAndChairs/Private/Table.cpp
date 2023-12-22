@@ -19,6 +19,9 @@ Table::~Table()
     }
 }
 
+/**
+     * Procedural generates the table structure.
+**/
 void Table::generate()
 {
     for (const auto component : m_Components) {
@@ -26,6 +29,11 @@ void Table::generate()
     }
 }
 
+/**
+     * Rotates the table algong the z axes respect to the center parameter.
+     * @param angle : rotation angle
+     * @param center : rotation center
+**/
 void Table::rotate(FVector center, double angle)
 {
     for (const auto component : m_Components) {
@@ -33,6 +41,10 @@ void Table::rotate(FVector center, double angle)
     }
 }
 
+/**
+     * Rotates the table algong the z axes respect to the chair origin.
+     * @param angle : rotation angle
+**/
 void Table::rotate(double angle)
 {
     rotate(m_Origin, angle);
