@@ -68,6 +68,7 @@ void Cuboid::generate()
 
     m_Mesh->SetMaterial(Nsections, m_Material);
     m_Mesh->CreateMeshSection_LinearColor(Nsections++, m_Vertexes, m_Triangles, m_Normals, m_UVs, Colors, m_Tangents, true);
+    m_Mesh->AddCollisionConvexMesh(m_Vertexes);
 }
 
 
