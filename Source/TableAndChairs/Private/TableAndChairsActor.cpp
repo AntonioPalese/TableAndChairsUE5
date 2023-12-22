@@ -17,8 +17,10 @@ ATableAndChairsActor::ATableAndChairsActor()
 	m_Mesh->SetNotifyRigidBodyCollision(true);
 	m_Mesh->bUseComplexAsSimpleCollision = false;
 
-	ConstructorHelpers::FObjectFinder<UMaterialInterface> Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
-	m_Material = Material.Object.Get();
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> Table_Material(TEXT("/Script/Engine.Material'/Game/Textures/bark_willow_diff_4k_Mat.bark_willow_diff_4k_Mat'"));
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> Chairs_Material(TEXT("/Script/Engine.Material'/Game/Textures/brown_leather_albedo_4k_Mat.brown_leather_albedo_4k_Mat'"));
+	m_Table_Material = Table_Material.Object.Get();
+	m_Chairs_Material = Chairs_Material.Object.Get();
 
 	/// table
 	HTlegs = FMath::RandRange(80.0, 120.0);
@@ -123,7 +125,7 @@ void ATableAndChairsActor::Regenerate()
 
 void ATableAndChairsActor::ChairGenerate(FVector2D Origin, double angle)
 {
-	Chair ch(FVector(Origin.X, Origin.Y, Hlegs / 2), ChairData::Leg{ m_Legs_W, m_Legs_L, Hlegs }, ChairData::Seat{ Wseat, Lseat, Hseat }, ChairData::Back{ Wseat, m_Legs_L, Hback }, 0.0, Nsections, m_Mesh, m_Material);
+	Chair ch(FVector(Origin.X, Origin.Y, Hlegs / 2), ChairData::Leg{ m_Legs_W, m_Legs_L, Hlegs }, ChairData::Seat{ Wseat, Lseat, Hseat }, ChairData::Back{ Wseat, m_Legs_L, Hback }, 0.0, Nsections, m_Mesh, m_Chairs_Material);
 
 	if (angle != 0.0)
 		ch.rotate(angle);
@@ -133,7 +135,7 @@ void ATableAndChairsActor::ChairGenerate(FVector2D Origin, double angle)
 
 void ATableAndChairsActor::TableGenerate(FVector2D Origin, double angle)
 {
-	Table t(FVector(Origin.X, Origin.Y, HTlegs / 2), TableData::Leg{ m_Legs_W, m_Legs_L, HTlegs }, TableData::Top{ Wttop, Lttop, Httop }, 0.0, Nsections, m_Mesh, m_Material);
+	Table t(FVector(Origin.X, Origin.Y, HTlegs / 2), TableData::Leg{ m_Legs_W, m_Legs_L, HTlegs }, TableData::Top{ Wttop, Lttop, Httop }, 0.0, Nsections, m_Mesh, m_Table_Material);
 
 	if (angle != 0.0)
 		t.rotate(angle);

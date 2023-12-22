@@ -120,9 +120,6 @@ void Rectangle::rotate(FVector center, double angle)
     m_Vertexes[m_Indexes[2]] = p2;
     m_Vertexes[m_Indexes[3]] = p3;
 
-    for (auto& c : m_Children) {
-        c->rotate(center, angle);
-    }
 }
 
 void Rectangle::rotate(double angle)

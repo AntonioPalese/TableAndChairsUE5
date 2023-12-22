@@ -22,7 +22,6 @@ private:
     double m_Angle;
 
     TArray<FVector>& m_Vertexes;
-    TArray<Rectangle*> m_Children;
     TArray<int>& m_Triangles;
     TArray<int> m_Indexes;
     TArray<FVector2D>& m_UVs;

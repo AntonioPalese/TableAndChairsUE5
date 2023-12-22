@@ -62,7 +62,8 @@ public:
 	UProceduralMeshComponent* m_Mesh;
 private:
 
-	UMaterialInterface* m_Material;
+	UMaterialInterface* m_Chairs_Material;
+	UMaterialInterface* m_Table_Material;
 	int32 Nsections = 0;
 	double m_Legs_W;
 	double m_Legs_L;
