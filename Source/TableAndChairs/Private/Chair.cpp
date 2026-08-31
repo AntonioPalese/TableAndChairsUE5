@@ -12,8 +12,8 @@ Chair::Chair(FVector origin, ChairData::Leg leg, ChairData::Seat seat, ChairData
     // seat
     m_Components.Add(new Cuboid(FVector(origin.X, origin.Y, origin.Z + leg.HLegs / 2 + seat.HSeat / 2), FVector(seat.WSeat + leg.WLegs, seat.LSeat + leg.WLegs, seat.HSeat), angle, Nsections, m_Mesh, m_Material));
 
-    // back
-    m_Components.Add(new Cuboid(FVector(origin.X, origin.Y + seat.LSeat / 2, origin.Z + leg.HLegs / 2 + back.HBack / 2), FVector(back.WBack, back.LBack, back.HBack), angle, Nsections, m_Mesh, m_Material));
+    // back (rests on top of the seat, not on top of the legs)
+    m_Components.Add(new Cuboid(FVector(origin.X, origin.Y + seat.LSeat / 2, origin.Z + leg.HLegs / 2 + seat.HSeat + back.HBack / 2), FVector(back.WBack, back.LBack, back.HBack), angle, Nsections, m_Mesh, m_Material));
 }
 
 Chair::~Chair()

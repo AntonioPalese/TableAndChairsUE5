@@ -54,8 +54,8 @@ For visual consistency, the following dimensions are hardcoded rather than rando
 
 - Table leg width and length: `5.0`
 - Chair leg width and length: `5.0`
-- Chair back width: `5.0`
-- Chair back length: fixed to chair seat width
+- Chair back thickness: `5.0`
+- Chair back width: fixed to chair seat width
 
 ## Project Structure
 
